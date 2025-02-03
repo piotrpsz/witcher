@@ -21,11 +21,15 @@ add_library(witcher
         witcher.hpp
         object.cpp
         object.h
-        mouse_event.h)
+        mouse_event.h
+        font.cpp
+        font.h)
 
+add_subdirectory(toolbox)
 
 target_link_libraries(witcher PRIVATE
         SDL3::SDL3
         SDL3_image::SDL3_image
         SDL3_ttf::SDL3_ttf
+        toolbox
 )

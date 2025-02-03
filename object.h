@@ -26,7 +26,7 @@ namespace Witcher {
             .right = DEFAULT_RIGHT_PADDING,
             .bottom = DEFAULT_BOTTOM_PADDING};
     public:
-        explicit Object(Object* const parent = nullptr) : parent_{parent} {}
+        explicit Object(ObjectType const type, Object* const parent = nullptr) : type_{type}, parent_{parent} {}
         virtual ~Object() noexcept;
 
         // SETTERS
