@@ -21,6 +21,13 @@ namespace Witcher {
     using f32 = float;
     using f64 = double;
 
+    enum ObjectType {
+        None = 0,
+        Text, Label, Button,
+        HBoxLayout, VBoxLayout, GridLayout,
+        Window
+    };
+
     /// Point struct
     struct Point {
         int x{}, y{};
@@ -50,7 +57,7 @@ namespace Witcher {
             size.w -= (2 * n);
             size.h -= (2 * n);
         }
-        [[nodiscard]] bool contains(f32 const x,  f32 const y) const noexcept {
+        [[nodiscard]] bool contains_point(f32 const x,  f32 const y) const noexcept {
             auto const fx0 = static_cast<f32>(pos.x);
             auto const fy0 = static_cast<f32>(pos.y);
             if (x < fx0 || y < fy0) return {};
@@ -66,3 +73,23 @@ namespace Witcher {
     };
 }
 
+template <>
+struct std::formatter<Witcher::Point> : std::formatter<std::string> {
+    auto format(Witcher::Point const& p, format_context& ctx) const {
+        return formatter<std::string>::format(std::format("({}, {})", p.x, p.y), ctx);
+    }
+};
+
+template <>
+struct std::formatter<Witcher::Size> : std::formatter<std::string> {
+    auto format(Witcher::Size const& s, format_context& ctx) const {
+        return formatter<std::string>::format(std::format("({}, {})", s.w, s.h), ctx);
+    }
+};
+
+template <>
+struct std::formatter<Witcher::Rect> : std::formatter<std::string> {
+    auto format(Witcher::Rect const& r, format_context& ctx) const {
+        return formatter<std::string>::format(std::format("[{}, {}]", r.pos, r.size), ctx);
+    }
+};

@@ -13,9 +13,15 @@ message("-------------------------------------------------------")
 set(CMAKE_CXX_STANDARD 23)
 
 add_library(witcher
-        point.h
-        dummy.cpp
-        dummy.h)
+        types.h
+        widget.cpp
+        widget.h
+        layout.cpp
+        layout.h
+        witcher.hpp
+        object.cpp
+        object.h
+        mouse_event.h)
 
 
 target_link_libraries(witcher PRIVATE
