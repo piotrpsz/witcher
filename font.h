@@ -14,12 +14,23 @@
 
 namespace Witcher {
     class Font final {
-        std::string name_{};
-        f32 size_{};
         TTF_Font* font_{};
+        std::string name_;
+        f32 size_;
     public:
         Font(std::string_view name, f32 size);
-        ~Font();
+        ~Font() = default;
 
+        [[nodiscard]] std::string_view name() const noexcept { return name_; };
+        [[nodiscard]] f32 size() const noexcept { return size_; };
+
+        [[nodiscard]] bool valid() const noexcept { return font_ != nullptr; }
+        void description() const noexcept;
+        [[nodiscard]] Size geometry(std::string const& text) const noexcept;
+        SDL_Texture* texture_for(SDL_Renderer* renderer, std::string const& text, SDL_Color color) const noexcept;
+
+    private:
+        static std::string style(TTF_FontStyleFlags flags) noexcept;
+        static std::string alignment(TTF_HorizontalAlignment flags) noexcept;
     };
 }
