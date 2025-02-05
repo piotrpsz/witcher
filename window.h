@@ -15,20 +15,22 @@ namespace Witcher {
         SDL_Window* window_{};
         SDL_DisplayID display_id_{};
     public:
-        explicit Window(std::string const& title, int width, int height);
+        explicit Window(std::string const& title, int width = 640, int height = 400);
         ~Window() override;
 
         void show() noexcept;
 
-    private:
-        std::optional<Size> window_size() const noexcept;
-        std::optional<Point> window_pos() const noexcept;
+        [[nodiscard]] std::optional<Size> window_size() const noexcept;
+        [[nodiscard]] std::optional<Point> window_pos() const noexcept;
         void update_frame() noexcept;
 
-        void move(int x, int y) noexcept;
+        void move(int x, int y) noexcept override;
         void move_center(int display) noexcept;
         void resize(int width, int height) noexcept;
-
+        [[nodiscard]] Size size_min() const noexcept override { return {}; }
+        [[nodiscard]] Size size_max() const noexcept override { return {}; }
+        void update() noexcept override;
+        void draw() noexcept override;
     };
 
 }

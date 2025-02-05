@@ -35,7 +35,9 @@ add_library(witcher
         window.cpp
         window.h
         application.cpp
-        application.h)
+        application.h
+        event.h
+        event.cpp)
 
 add_subdirectory(toolbox)
 

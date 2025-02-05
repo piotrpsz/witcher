@@ -7,6 +7,7 @@
 /*------- include files:
 -------------------------------------------------------------------*/
 #include "types.h"
+#include "window.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -35,13 +36,20 @@ namespace Witcher {
             std::string app_copyright = "");
         ~Application();
 
+
+        template <typename T>
+        std::shared_ptr<Window> add_window(std::string title) noexcept {
+            windows_.emplace_back(std::make_shared<T>(title));
+            return windows_.back();
+        }
+
         void run() noexcept;
         void add_child(std::shared_ptr<Window> win) noexcept;
 
     private:
         void main_loop() noexcept;
         void update();
-        bool can_exit();
+        bool can_exit() const noexcept;
         static void displays();
 
         friend Window;

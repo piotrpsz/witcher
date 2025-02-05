@@ -18,22 +18,21 @@ namespace Witcher {
     Button::Button(std::string text, Widget* const parent) :
         Widget(ObjectType::Button, parent)
     {
-        set_parent(parent);
-        set_renderer(parent->renderer());
+        if (parent) {
+            set_parent(parent);
+            set_renderer(parent->renderer());
+        }
         set_visible(true);
         set_visible_frame(true);
         set_resizeable(true);
 
-        text_ = new Text(std::move(text), this);
-        add_child(text_);
+        auto const child = new Text(std::move(text), this);
 
-        set_frame(text_->frame());
-        frame().resize(
-        DEFAULT_LEFT_PADDING + DEFAULT_RIGHT_PADDING,
-        DEFAULT_TOP_PADDING + DEFAULT_BOTTOM_PADDING);
-        text_->frame().move(
-        DEFAULT_LEFT_PADDING,
-        DEFAULT_TOP_PADDING);
+        const auto [w, h] = child->frame().size;
+        set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
+        child->set_frame(area());
+
+        add_child(child);
     }
 
     /****************************************************************
@@ -122,6 +121,13 @@ namespace Witcher {
         // Draw children.
         for (auto const child : children())
             child->draw();
+    }
+
+    Size Button::size_min() const noexcept {
+        return frame().size;
+    }
+    Size Button::size_max() const noexcept {
+        return frame().size;
     }
 
 }

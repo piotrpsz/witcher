@@ -5,6 +5,8 @@
 /*------- include files:
 -------------------------------------------------------------------*/
 #include "window.h"
+
+#include "thema.h"
 #include "types.h"
 #include "toolbox/all.h"
 
@@ -111,4 +113,20 @@ namespace Witcher {
         box::print_error("Failed to update window's frame: {}\n", SDL_GetError());
     }
 
+    void Window::update() noexcept {
+        for (const auto child: children()) {
+            child->update();
+        }
+    }
+
+    void Window::draw() noexcept {
+        auto const [r, g, b, a] = thema::DEFAULT_WINDOW_BACKGROUND;
+        SDL_SetRenderDrawColor(renderer(), r, g, b, a);
+        SDL_RenderClear(renderer());
+
+        for (const auto child: children())
+            child->draw();
+
+        SDL_RenderPresent(renderer());
+    }
 }

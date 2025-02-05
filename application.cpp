@@ -11,6 +11,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include "window.h"
+#include "event.h"
 
 namespace Witcher {
     using namespace bee;
@@ -67,12 +68,51 @@ namespace Witcher {
         main_loop();
     }
 
+    /****************************************************************
+    *                                                               *
+    *                     m a i n _ l o o p                         *
+    *                                                               *
+    ****************************************************************/
+
     void Application::main_loop() noexcept {
-        for (auto const win : windows_)
+        for (auto const& win : windows_)
             win->show();
 
-
+        bool quit{};
+        while (!quit) {
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                switch (event.type) {
+                    case SDL_EVENT_QUIT:
+                        bee::box::print("{}\n", event::to_string(event.type));
+                        if (!can_exit())
+                            continue;
+                        quit = true;
+                        break;
+                    default: {}
+                }
+            }
+            update();
+        }
 
     }
 
+    void Application::update() {
+        while (SDL_GetTicks() < (tick_counter_ + DEADLINE)) {
+        }
+        tick_counter_ = SDL_GetTicks();
+
+        for (auto const& win : windows_)
+            win->update();
+
+        for (auto const& win : windows_)
+            win->draw();
+    }
+
+    bool Application::can_exit() const noexcept {
+        for (auto const& win : windows_)
+            if (!win->can_close())
+                return false;
+        return true;
+    }
 }

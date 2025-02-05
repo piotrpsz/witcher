@@ -40,6 +40,7 @@ namespace Witcher {
         [[nodiscard]] SDL_Renderer* renderer() const noexcept { return renderer_; }
         [[nodiscard]] Object* contains_point(f32 x, f32 y) noexcept;
         [[nodiscard]] std::vector<Object*> const& children() const noexcept { return children_; }
+        [[nodiscard]] Padding const& padding() const noexcept { return padding_; }
 
         /*
         // Iterate over children.
@@ -76,9 +77,10 @@ namespace Witcher {
         Rect& frame() noexcept { return frame_; }
         [[nodiscard]] Rect const& frame() const noexcept { return frame_; }
         void set_area(Rect area) noexcept;
+        Rect& area() noexcept { return area_; }
         [[nodiscard]] Rect const& area() const noexcept { return area_; }
         void set_pos(int x, int y) noexcept;
-        void move(int dx, int dy) noexcept;
+        virtual void move(int dx, int dy) noexcept;
         [[nodiscard]] Size size() const noexcept { return frame_.size; }
         [[nodiscard]] virtual Size size_min() const noexcept = 0;
         [[nodiscard]] virtual Size size_max() const noexcept = 0;
@@ -93,10 +95,10 @@ namespace Witcher {
         virtual void mouse_double_down(MouseEvent&&) noexcept {}
         virtual void mouse_double_up(MouseEvent&&) noexcept {}
 protected:
-        static constexpr int DEFAULT_LEFT_PADDING = 6;
-        static constexpr int DEFAULT_RIGHT_PADDING = 6;
-        static constexpr int DEFAULT_TOP_PADDING = 6;
-        static constexpr int DEFAULT_BOTTOM_PADDING = 6;
+        static constexpr int DEFAULT_LEFT_PADDING = 3;
+        static constexpr int DEFAULT_RIGHT_PADDING = 3;
+        static constexpr int DEFAULT_TOP_PADDING = 3;
+        static constexpr int DEFAULT_BOTTOM_PADDING = 3;
 
         static constexpr int DEFAULT_LEFT_GAP = 2;
         static constexpr int DEFAULT_RIGHT_GAP = 2;

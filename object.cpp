@@ -38,6 +38,8 @@ namespace Witcher {
 
     void Object::set_area(Rect const area) noexcept {
         area_ = area;
+        // frame_.pos.x = area_.pos.x - padding_.left;
+        // frame_.pos.y = area_.pos.y - padding_.top;
         frame_.size.w = area.size.w + padding_.left + padding_.right;
         frame_.size.h = area.size.h + padding_.top + padding_.bottom;
     }

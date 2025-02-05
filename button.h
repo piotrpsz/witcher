@@ -12,13 +12,14 @@ namespace Witcher {
     class Text;
 
     class Button : public Widget {
-        Text* text_;
         bool pressed_ = false;
         std::optional<u64> tickcounter_{};
     public:
         explicit Button(std::string text, Widget* parent = nullptr);
         ~Button() override = default;
 
+        Size size_min() const noexcept override;
+        Size size_max() const noexcept override;
         void mouse_down(MouseEvent &&event) noexcept override;
         void mouse_up(MouseEvent &&event) noexcept override;
         void mouse_double_down(MouseEvent &&event) noexcept override;

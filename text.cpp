@@ -5,6 +5,7 @@
 #include "text.h"
 #include "thema.h"
 #include "font_store.h"
+#include "toolbox/all.h"
 
 namespace Witcher {
 
@@ -15,14 +16,15 @@ namespace Witcher {
         set_parent(parent);
         set_renderer(parent->renderer());
         set_visible(true);
-        set_visible_frame(true);    // for tests
+        // set_visible_frame(true);    // for tests
 
         if (auto const font = FontStore::self().font("Mono-Regular", 10.5)) {
             if (auto rect = font->geometry(text_)) {
-                auto&& [w, h] = *rect;
-                set_area({0, 0, w, h});
                 font_ = font;
                 texture_ = font_->texture_for(renderer(), text_, thema::LIGHT_3);
+
+                auto&& [w, h] = *rect;
+                set_frame({0, 0,w + padding().left + padding().right, h + padding().top + padding().bottom});
             }
         }
     }
