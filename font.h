@@ -26,7 +26,7 @@ namespace Witcher {
 
         [[nodiscard]] bool valid() const noexcept { return font_ != nullptr; }
         void description() const noexcept;
-        [[nodiscard]] Size geometry(std::string const& text) const noexcept;
+        [[nodiscard]] std::optional<Size> geometry(std::string const& text) const noexcept;
         SDL_Texture* texture_for(SDL_Renderer* renderer, std::string const& text, SDL_Color color) const noexcept;
 
     private:

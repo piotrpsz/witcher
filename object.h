@@ -19,12 +19,12 @@ namespace Witcher {
         Object *parent_{};
         std::vector<Object *> children_{};
         std::bitset<16> flags_{};
-        SDL_Renderer *renderer_{};
         Padding padding_{
             .left = DEFAULT_LEFT_PADDING,
             .top = DEFAULT_TOP_PADDING,
             .right = DEFAULT_RIGHT_PADDING,
             .bottom = DEFAULT_BOTTOM_PADDING};
+        SDL_Renderer *renderer_{};
     public:
         explicit Object(ObjectType const type, Object* const parent = nullptr) : type_{type}, parent_{parent} {}
         virtual ~Object() noexcept;
@@ -51,7 +51,7 @@ namespace Witcher {
         // Flags
         [[nodiscard]] bool visible() const noexcept { return flags_.test(VISIBLE_BIT); }
         void set_visible(bool const value) noexcept {flags_.set(VISIBLE_BIT, value); }
-        [[nodiscard]] bool visible_frane() const noexcept { return flags_.test(VISIBLE_FRAME_BIT); }
+        [[nodiscard]] bool visible_frame() const noexcept { return flags_.test(VISIBLE_FRAME_BIT); }
         void set_visible_frame(bool const value) noexcept { flags_.set(VISIBLE_FRAME_BIT, value); }
         [[nodiscard]] bool enabled() const noexcept { return flags_.test(ENABLED_BIT); }
         void set_enabled(bool const value) noexcept { flags_.set(ENABLED_BIT, value); }
@@ -69,11 +69,14 @@ namespace Witcher {
         void set_frame(Rect frame) noexcept;
         void update_area(Rect frame) noexcept;
         Rect& frame() noexcept { return frame_; }
-        [[nodiscard]] Rect const& frane() const noexcept { return frame_; }
+        [[nodiscard]] Rect const& frame() const noexcept { return frame_; }
         void set_area(Rect area) noexcept;
         [[nodiscard]] Rect const& area() const noexcept { return area_; }
         void set_pos(int x, int y) noexcept;
         void move(int dx, int dy) noexcept;
+        [[nodiscard]] Size size() const noexcept { return frame_.size; }
+        [[nodiscard]] virtual Size size_min() const noexcept = 0;
+        [[nodiscard]] virtual Size size_max() const noexcept = 0;
 
         // virtual functions
         virtual void close() {}

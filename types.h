@@ -23,7 +23,7 @@ namespace Witcher {
 
     enum ObjectType {
         None = 0,
-        Text, Label, Button,
+        Text, Button,
         HBoxLayout, VBoxLayout, GridLayout,
         Window
     };
@@ -65,6 +65,14 @@ namespace Witcher {
             auto const fy1 = fy0 + static_cast<f32>(size.h);
             if (x > fx1 || y > fy1) return {};
             return true;
+        }
+        [[nodiscard]] SDL_FRect to_frect() const noexcept {
+            return SDL_FRect{
+                .x = static_cast<f32>(pos.x),
+                .y = static_cast<f32>(pos.y),
+                .w = static_cast<f32>(size.w),
+                .h = static_cast<f32>(size.h)
+            };
         }
     };
 

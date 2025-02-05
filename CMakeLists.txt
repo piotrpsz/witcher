@@ -24,7 +24,10 @@ add_library(witcher
         mouse_event.h
         font.cpp
         font.h
-        font_store.h)
+        font_store.h
+        text.cpp
+        text.h
+        thema.h)
 
 add_subdirectory(toolbox)
 

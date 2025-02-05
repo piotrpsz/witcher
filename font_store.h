@@ -49,14 +49,14 @@ namespace Witcher {
         [[nodiscard]] auto contains(std::string const& name, float const size) const noexcept
             -> std::optional<std::shared_ptr<Font>>
         {
-            if (!fonts_.empty()) {
-                for (auto const & font : fonts_) {
+            if (!fonts_.empty())
+                for (auto const & font : fonts_)
                     if (font->name() == name && std::fabs(font->size() - size) <= 0.1)
                         return font;
-                }
-            }
+
             return {};
         }
+
         FontStore() = default;
     };
 }

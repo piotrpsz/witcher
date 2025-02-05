@@ -53,7 +53,7 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    Size Font::geometry(std::string const& text) const noexcept {
+    std::optional<Size> Font::geometry(std::string const& text) const noexcept {
         Size size;
         if (TTF_GetStringSize(font_, text.c_str(), text.size(), &size.w, &size.h))
             return size;
