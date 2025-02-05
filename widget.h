@@ -19,6 +19,8 @@ namespace Witcher {
             // By default, the widget has no focus.
             // Focus must be set explicitly.
             set_focus(false);
+            // By default, the widget should be displayable.
+            set_displayable(true);
         }
     };
 

@@ -39,7 +39,9 @@ namespace Witcher {
         [[nodiscard]] ObjectType type() const noexcept { return type_; }
         [[nodiscard]] SDL_Renderer* renderer() const noexcept { return renderer_; }
         [[nodiscard]] Object* contains_point(f32 x, f32 y) noexcept;
+        [[nodiscard]] std::vector<Object*> const& children() const noexcept { return children_; }
 
+        /*
         // Iterate over children.
         using iterator = std::vector<Object *>::iterator;
         using const_iterator = std::vector<Object *>::const_iterator;
@@ -47,6 +49,7 @@ namespace Witcher {
         iterator end() { return children_.end(); }
         [[nodiscard]] const_iterator cbegin() const { return children_.cbegin(); }
         [[nodiscard]] const_iterator cend() const { return children_.cend(); }
+        */
 
         // Flags
         [[nodiscard]] bool visible() const noexcept { return flags_.test(VISIBLE_BIT); }
@@ -64,6 +67,8 @@ namespace Witcher {
         }
         [[nodiscard]] bool resizable() const noexcept { return flags_.test(RESIZEABLE_BIT); }
         void set_resizeable(bool const value) noexcept { flags_.set(RESIZEABLE_BIT, value); }
+        bool displayable() const noexcept { return flags_.test(DISPLAYABLE_BIT); }
+        void set_displayable(bool const value) noexcept { flags_.set(DISPLAYABLE_BIT, value); }
 
         // Geometry
         void set_frame(Rect frame) noexcept;
@@ -79,14 +84,14 @@ namespace Witcher {
         [[nodiscard]] virtual Size size_max() const noexcept = 0;
 
         // virtual functions
-        virtual void close() {}
-        virtual void draw() = 0;
-        virtual void update() = 0;
-        virtual bool can_close() { return true; }
-        virtual void mouse_down(MouseEvent&& event) {}
-        virtual void mouse_up(MouseEvent&& event) {}
-        virtual void mouse_double_down(MouseEvent&& event) {}
-        virtual void mouse_double_up(MouseEvent&& event) {}
+        virtual void close() noexcept {}
+        virtual void draw() noexcept = 0;
+        virtual void update() noexcept = 0;
+        virtual bool can_close() noexcept { return true; }
+        virtual void mouse_down(MouseEvent&&) noexcept {}
+        virtual void mouse_up(MouseEvent&&) noexcept {}
+        virtual void mouse_double_down(MouseEvent&&) noexcept {}
+        virtual void mouse_double_up(MouseEvent&&) noexcept {}
 protected:
         static constexpr int DEFAULT_LEFT_PADDING = 6;
         static constexpr int DEFAULT_RIGHT_PADDING = 6;
@@ -104,6 +109,7 @@ protected:
         static constexpr auto FOCUSABLE_BIT = 3;
         static constexpr auto FOCUS_BIT = 4;
         static constexpr auto RESIZEABLE_BIT = 5;
+        static constexpr auto DISPLAYABLE_BIT = 6;
     };
 
 }

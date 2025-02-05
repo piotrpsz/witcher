@@ -27,7 +27,15 @@ add_library(witcher
         font_store.h
         text.cpp
         text.h
-        thema.h)
+        thema.h
+        button.cpp
+        button.h
+        helpers/draw.cpp
+        helpers/draw.h
+        window.cpp
+        window.h
+        application.cpp
+        application.h)
 
 add_subdirectory(toolbox)
 

@@ -8,8 +8,8 @@
 
 namespace Witcher {
 
-    Text::Text(std::string text, Object* const parent) :
-        Object(ObjectType::Text, parent),
+    Text::Text(std::string text, Widget* const parent) :
+        Widget(ObjectType::Text, parent),
         text_(std::move(text))
     {
         set_parent(parent);
@@ -34,10 +34,10 @@ namespace Witcher {
         return frame().size;
     }
 
-    void Text::update() {
+    void Text::update() noexcept {
     }
 
-    void Text::draw() {
+    void Text::draw() noexcept {
         if (visible()) {
             if (visible_frame()) {
                 auto const [r, g, b, a] = thema::DEFAULT_FRAME_COLOR;

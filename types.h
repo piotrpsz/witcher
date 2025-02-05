@@ -21,7 +21,7 @@ namespace Witcher {
     using f32 = float;
     using f64 = double;
 
-    enum ObjectType {
+    enum class ObjectType {
         None = 0,
         Text, Button,
         HBoxLayout, VBoxLayout, GridLayout,
