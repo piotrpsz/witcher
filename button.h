@@ -18,13 +18,14 @@ namespace Witcher {
         explicit Button(std::string text, Widget* parent = nullptr);
         ~Button() override = default;
 
-        Size size_min() const noexcept override;
-        Size size_max() const noexcept override;
-        void mouse_down(MouseEvent &&event) noexcept override;
-        void mouse_up(MouseEvent &&event) noexcept override;
-        void mouse_double_down(MouseEvent &&event) noexcept override;
-        void mouse_double_up(MouseEvent &&event) noexcept override;
+        [[nodiscard]] Size size_min() const noexcept override;
+        [[nodiscard]] Size size_max() const noexcept override;
+        void mouse_down(MouseEvent event) noexcept override;
+        void mouse_up(MouseEvent event) noexcept override;
+        void mouse_double_down(MouseEvent event) noexcept override;
+        void mouse_double_up(MouseEvent event) noexcept override;
 
+        void move_fixed(int x, int y) noexcept override;
         void update() noexcept override;
         void draw() noexcept override;
 

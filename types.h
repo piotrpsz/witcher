@@ -32,6 +32,9 @@ namespace Witcher {
     struct Point {
         int x{}, y{};
     };
+    struct PointF {
+        f32 px{}, py{};
+    };
 
     /// Size struct
     struct  Size {

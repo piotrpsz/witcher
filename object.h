@@ -68,8 +68,10 @@ namespace Witcher {
         }
         [[nodiscard]] bool resizable() const noexcept { return flags_.test(RESIZEABLE_BIT); }
         void set_resizeable(bool const value) noexcept { flags_.set(RESIZEABLE_BIT, value); }
-        bool displayable() const noexcept { return flags_.test(DISPLAYABLE_BIT); }
+        [[nodiscard]] bool displayable() const noexcept { return flags_.test(DISPLAYABLE_BIT); }
         void set_displayable(bool const value) noexcept { flags_.set(DISPLAYABLE_BIT, value); }
+        [[nodiscard]] bool fix_position() const noexcept { return flags_.test(FIXED_POSITION_BIT); }
+        void set_fix_position(bool const value) noexcept { flags_.set(FIXED_POSITION_BIT, value); }
 
         // Geometry
         void set_frame(Rect frame) noexcept;
@@ -84,16 +86,17 @@ namespace Witcher {
         [[nodiscard]] Size size() const noexcept { return frame_.size; }
         [[nodiscard]] virtual Size size_min() const noexcept = 0;
         [[nodiscard]] virtual Size size_max() const noexcept = 0;
+        virtual void move_fixed(int x, int y) noexcept {};
 
         // virtual functions
         virtual void close() noexcept {}
         virtual void draw() noexcept = 0;
         virtual void update() noexcept = 0;
         virtual bool can_close() noexcept { return true; }
-        virtual void mouse_down(MouseEvent&&) noexcept {}
-        virtual void mouse_up(MouseEvent&&) noexcept {}
-        virtual void mouse_double_down(MouseEvent&&) noexcept {}
-        virtual void mouse_double_up(MouseEvent&&) noexcept {}
+        virtual void mouse_down(MouseEvent) noexcept {}
+        virtual void mouse_up(MouseEvent) noexcept {}
+        virtual void mouse_double_down(MouseEvent) noexcept {}
+        virtual void mouse_double_up(MouseEvent) noexcept {}
 protected:
         static constexpr int DEFAULT_LEFT_PADDING = 3;
         static constexpr int DEFAULT_RIGHT_PADDING = 3;
@@ -112,6 +115,7 @@ protected:
         static constexpr auto FOCUS_BIT = 4;
         static constexpr auto RESIZEABLE_BIT = 5;
         static constexpr auto DISPLAYABLE_BIT = 6;
+        static constexpr auto FIXED_POSITION_BIT = 7;
     };
 
 }

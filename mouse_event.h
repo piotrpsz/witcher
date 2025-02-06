@@ -31,7 +31,7 @@ namespace Witcher {
                 button_ = MouseButton::Unknown;
         }
 
-        [[nodiscard]] std::pair<int, int> pos() const noexcept { return {event_.x,event_.y}; }
+        [[nodiscard]] std::pair<f32, f32> pos() const noexcept { return {event_.x, event_.y}; }
         [[nodiscard]] uint clicks() const noexcept { return event_.clicks; }
         [[nodiscard]] u64 timestamp () const noexcept { return event_.timestamp / 1'000'000; }
         [[nodiscard]] MouseButton button() const noexcept { return button_; }

@@ -27,11 +27,11 @@ namespace Witcher {
         set_resizeable(true);
 
         auto const child = new Text(std::move(text), this);
-
-        const auto [w, h] = child->frame().size;
-        set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
-        child->set_frame(area());
-
+        {
+            const auto [w, h] = child->frame().size;
+            set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
+            child->set_frame(area());
+        }
         add_child(child);
     }
 
@@ -41,7 +41,7 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    void Button::mouse_down(MouseEvent&& event) noexcept {
+    void Button::mouse_down(MouseEvent event) noexcept {
         if (focusable()) {
             set_focus(true);
             pressed_ = true;
@@ -54,7 +54,7 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    void Button::mouse_up(MouseEvent&& event) noexcept {
+    void Button::mouse_up(MouseEvent event) noexcept {
         if (focus()) {
             tickcounter_ = SDL_GetTicks();
         }
@@ -66,7 +66,7 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    void Button::mouse_double_down(MouseEvent&& event) noexcept {
+    void Button::mouse_double_down(MouseEvent event) noexcept {
         if (focus()) {
             bee::box::print("Button::mouse_double_click\n");
         }
@@ -78,7 +78,7 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    void Button::mouse_double_up(MouseEvent&& event) noexcept {
+    void Button::mouse_double_up(MouseEvent event) noexcept {
     }
 
     /****************************************************************
@@ -95,6 +95,11 @@ namespace Witcher {
                 if (focusable())
                     set_focus(pressed_);
             }
+    }
+
+    void Button::move_fixed(int x, int y) noexcept {
+        set_fix_position(true);
+        move(x, y);
     }
 
     /****************************************************************

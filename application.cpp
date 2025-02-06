@@ -83,12 +83,59 @@ namespace Witcher {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
                 switch (event.type) {
+                    // Window Events --------------------------------
+                    case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+                        // box::print("{}\n", event::to_string(event.type));
+                        break;
                     case SDL_EVENT_QUIT:
-                        bee::box::print("{}\n", event::to_string(event.type));
+                        // box::print("{}\n", event::to_string(event.type));
                         if (!can_exit())
                             continue;
                         quit = true;
                         break;
+                    case SDL_EVENT_WINDOW_MINIMIZED:
+                        // box::print("{}\n", event::to_string(event.type));
+                        for (auto const& win : windows_)
+                            win->set_visible(false);
+                        break;
+                    case SDL_EVENT_WINDOW_RESTORED:
+                        // box::print("{}\n", event::to_string(event.type));
+                        for (auto const& win : windows_)
+                            win->set_visible(true);
+                        break;
+
+                    // Mouse Events ---------------------------------
+                    case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+                        // box::print("{}\n", event::to_string(event.type));
+                        MouseEvent mouse_event{event.button};
+                        auto const [x,y] = mouse_event.pos();
+
+                        for (auto const& win : windows_) {
+                            if (auto const widget = win->contains_point(x, y)) {
+                                if (mouse_event.clicks() == 1)
+                                    widget->mouse_down(mouse_event);
+                                else if (mouse_event.clicks() == 2)
+                                    widget->mouse_double_down(mouse_event);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case SDL_EVENT_MOUSE_BUTTON_UP: {
+                        // box::print("{}\n", event::to_string(event.type));
+                        MouseEvent mouse_event{event.button};
+                        auto const [x,y] = mouse_event.pos();
+
+                        for (auto const& win : windows_) {
+                            if (auto const widget = win->contains_point(x, y)) {
+                                if (mouse_event.clicks() == 1) widget->mouse_up(mouse_event);
+                                else if (mouse_event.clicks() == 2) widget->mouse_double_up(mouse_event);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+
                     default: {}
                 }
             }

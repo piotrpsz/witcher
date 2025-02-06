@@ -113,6 +113,7 @@ namespace Witcher {
         box::print_error("Failed to update window's frame: {}\n", SDL_GetError());
     }
 
+
     void Window::update() noexcept {
         for (const auto child: children()) {
             child->update();

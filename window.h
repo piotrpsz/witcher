@@ -31,6 +31,10 @@ namespace Witcher {
         [[nodiscard]] Size size_max() const noexcept override { return {}; }
         void update() noexcept override;
         void draw() noexcept override;
+        // void mouse_down(MouseEvent event) noexcept override;
+        // void mouse_up(MouseEvent event) noexcept override;
+        // void mouse_double_down(MouseEvent event) noexcept override;
+        // void mouse_double_up(MouseEvent event) noexcept override;
     };
 
 }
