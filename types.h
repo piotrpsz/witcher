@@ -53,6 +53,9 @@ namespace Witcher {
             size.w += dw;
             size.h += dh;
         }
+        void resize(Size const new_size) noexcept {
+            size = new_size;
+        }
         void reduction(int const n) noexcept {
             pos.x += n;
             pos.y += n;

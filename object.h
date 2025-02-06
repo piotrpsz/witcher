@@ -23,16 +23,24 @@ namespace Witcher {
             .top = DEFAULT_TOP_PADDING,
             .right = DEFAULT_RIGHT_PADDING,
             .bottom = DEFAULT_BOTTOM_PADDING};
-        protected:
-            Object* parent_{};
-            SDL_Renderer *renderer_{};
+        Object* parent_{};
+        SDL_Renderer *renderer_{};
     public:
         explicit Object(ObjectType const type, Object* const parent = nullptr) : type_{type}, parent_{parent} {}
         virtual ~Object() noexcept;
 
         // SETTERS
-        virtual void set_parent(Object*) noexcept = 0;
-        virtual void set_renderer(SDL_Renderer*) noexcept = 0;
+        void set_parent(Object* const parent) noexcept {
+            parent_ = parent;
+            renderer_ = parent_ ? parent_->renderer_ : nullptr;
+            for (const auto child : children_) {
+                child->set_parent(this);
+            }
+        }
+        void set_renderer(SDL_Renderer* const renderer) noexcept {
+            renderer_ = renderer;
+        }
+
         void add_child(Object* const child) noexcept {
             child->set_parent(this);
             children_.push_back(child);
@@ -96,6 +104,7 @@ namespace Witcher {
         virtual void close() noexcept {}
         virtual void draw() noexcept = 0;
         virtual void update() noexcept = 0;
+        virtual void prepare() noexcept = 0;
         virtual void update_geometry() noexcept = 0;
         virtual bool can_close() noexcept { return true; }
         virtual void mouse_down(MouseEvent) noexcept {}

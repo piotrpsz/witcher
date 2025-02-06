@@ -24,8 +24,6 @@ namespace Witcher {
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;
         void update_geometry() noexcept override {}
-        void set_parent(Object *) noexcept override;
-        void set_renderer(SDL_Renderer *) noexcept override;
-
+        void prepare() noexcept override;
     };
 }

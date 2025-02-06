@@ -5,13 +5,10 @@
 /*------- include files:
 -------------------------------------------------------------------*/
 #include "application.h"
-#include "types.h"
+#include "window.h"
 #include "toolbox/all.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
-
-#include "window.h"
-#include "event.h"
 
 namespace Witcher {
     using namespace bee;
@@ -32,12 +29,12 @@ namespace Witcher {
         if (!SDL_SetAppMetadata(name_.c_str(), version_.c_str(), identifier_.c_str()))
             box::println_error("Failed to set application metadata: {}", SDL_GetError());
 
-        if (!app_creator.empty())
+        if (!creator_.empty())
             if (!SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_CREATOR_STRING, creator_.c_str()))
                 box::println_error("Failed to set app metadata creator: {}\n", SDL_GetError());
 
-        if (!app_copyright.empty())
-            if (!SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_COPYRIGHT_STRING, copyright_.c_str()))
+        if (!copyright_.empty())
+            if (SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_COPYRIGHT_STRING, copyright_.c_str()))
                 box::println_error("Failed to set app metadata copyright: {}\n", SDL_GetError());
 
         if (!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)) {
@@ -65,6 +62,11 @@ namespace Witcher {
     }
 
     void Application::run() noexcept {
+        for (const auto& win : windows_) {
+            win->prepare();
+            win->show();
+        }
+
         main_loop();
     }
 
@@ -75,9 +77,6 @@ namespace Witcher {
     ****************************************************************/
 
     void Application::main_loop() noexcept {
-        for (auto const& win : windows_)
-            win->show();
-
         bool quit{};
         while (!quit) {
             SDL_Event event;

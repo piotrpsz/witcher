@@ -21,29 +21,39 @@ namespace Witcher {
         Widget(ObjectType::Button, parent),
         text_{new Text(std::move(text), this)}
     {
+        set_parent(parent);
         add_child(text_);
+        set_visible(true);
+        set_visible_frame(true);
+        set_resizeable(true);
     }
 
-    void Button::set_parent(Object* const parent) noexcept {
-        parent_ = nullptr;
-        renderer_ = nullptr;
+    /****************************************************************
+    *                                                               *
+    *                       p r e p a r e                           *
+    *                                                               *
+    ****************************************************************/
 
-        if (parent) {
-            parent_ = parent;
-            set_renderer(parent->renderer());
-            text_->set_parent(this);
+    void Button::prepare() noexcept {
+        for (const auto it : children()) {
+            set_parent(this);
+            it->prepare();
         }
+
+        frame().resize(size_min());
+        update_area(frame());
+        text_->set_frame(area());
     }
 
-    void Button::set_renderer(SDL_Renderer* const renderer) noexcept {
-        if (renderer) {
-            set_visible(true);
-            set_visible_frame(true);
-            set_resizeable(true);
-            renderer_ = renderer;
-        }
-    }
+    /****************************************************************
+    *                                                               *
+    *                       p r e p a r e                           *
+    *                                                               *
+    ****************************************************************/
 
+    void Button::update_geometry() noexcept {
+        // TODO: jeśli rozmiar przycisku większa od size_min() to trzeba wypośrodkować tekst
+    }
 
     /****************************************************************
     *                                                               *
@@ -92,14 +102,7 @@ namespace Witcher {
     }
 
 
-    void Button::update_geometry() noexcept {
-        const auto [w, h] = text_->frame().size;
-        set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
-        text_->set_frame(area());
-    }
-
-
-    /****************************************************************
+     /****************************************************************
     *                                                               *
     *                         u p d a t e                           *
     *                                                               *
@@ -115,9 +118,11 @@ namespace Witcher {
             }
     }
 
-    void Button::move_fixed(int x, int y) noexcept {
+    void Button::move_fixed(int const x, int const y) noexcept {
+        box::println("Button::move_fixed ({}, {}): IN", x, y);
         set_fix_position(true);
         move(x, y);
+        box::println("Button::move_fixed: OUT");
     }
 
     /****************************************************************
@@ -147,10 +152,15 @@ namespace Witcher {
     }
 
     Size Button::size_min() const noexcept {
-        return frame().size;
+        const auto [w, h] = text_->frame().size;
+        return {
+            .w = w + padding().left + padding().right,
+            .h = h + padding().top + padding().bottom};
     }
+
     Size Button::size_max() const noexcept {
-        return frame().size;
+        const auto [w, h] = parent()->frame().size;
+        return {.w = w - padding().left - padding().right, .h = h - padding().top - padding().bottom};
     }
 
 }

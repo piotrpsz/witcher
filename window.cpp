@@ -27,7 +27,7 @@ namespace Witcher {
             box::print_error("Failed to create window and renderer: {}\n", SDL_GetError());
             exit(1);
         }
-        renderer_ = renderer;
+        set_renderer(renderer);
 
         display_id_ = SDL_GetDisplayForWindow(window_);
         SDL_HideWindow(window_);
@@ -39,15 +39,25 @@ namespace Witcher {
         SDL_DestroyWindow(window_);
     }
 
-    void Window::set_parent(Object *) noexcept {}
+    /****************************************************************
+    *                                                               *
+    *                       p r e p a r e                           *
+    *                                                               *
+    ****************************************************************/
 
-    void Window::set_renderer(SDL_Renderer* const renderer) noexcept {}
+    void Window::prepare() noexcept {
+        update_frame();
+        update_geometry();
+        for (const auto it : children()) {
+            it->set_parent(this);
+            it->prepare();
+        }
+    }
+
 
     void Window::show() noexcept {
         SDL_ShowWindow(window_);
         set_visible(true);
-        update_frame();
-        update_geometry();
     }
 
     void Window::move(int const x, int const y) noexcept {

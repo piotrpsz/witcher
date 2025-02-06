@@ -17,33 +17,20 @@ namespace Witcher {
         text_(std::move(text))
     {
         set_parent(parent);
+        set_visible(true);
     }
 
-    void Text::set_parent(Object* const parent) noexcept {
-        parent_ = nullptr;
-        renderer_ = nullptr;
-
-        if (parent) {
-            parent_ = parent;
-            set_renderer(parent->renderer());
-        }
-    }
-
-    void Text::set_renderer(SDL_Renderer* const renderer) noexcept {
-        if (renderer) {
-            renderer_ = renderer;
-            set_visible(true);
-
-            if (auto const font = FontStore::self().font("Mono-Regular", 10.5)) {
-                if (auto rect = font->geometry(text_)) {
-                    font_ = font;
-                    texture_ = font_->texture_for(renderer_, text_, thema::LIGHT_3);
-                    auto&& [w, h] = *rect;
-                    set_frame({0, 0,w + padding().left + padding().right, h + padding().top + padding().bottom});
-                }
+    void Text::prepare() noexcept {
+        if (auto const font = FontStore::self().font("Mono-Regular", 10.5)) {
+            if (auto rect = font->geometry(text_)) {
+                font_ = font;
+                texture_ = font_->texture_for(renderer(), text_, thema::LIGHT_3);
+                auto&& [w, h] = *rect;
+                set_frame({0, 0,w + padding().left + padding().right, h + padding().top + padding().bottom});
             }
         }
     }
+
 
     Size Text::size_min() const noexcept {
         return frame().size;

@@ -30,9 +30,7 @@ namespace Witcher {
         void update() noexcept override;
         void update_geometry() noexcept override;
         void draw() noexcept override;
-
-        void set_parent(Object *) noexcept override;
-        void set_renderer(SDL_Renderer *) noexcept override;
+        void prepare() noexcept;
 
     private:
     };
