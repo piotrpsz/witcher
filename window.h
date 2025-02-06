@@ -36,6 +36,9 @@ namespace Witcher {
         // void mouse_double_down(MouseEvent event) noexcept override;
         // void mouse_double_up(MouseEvent event) noexcept override;
         Object* contains_point(f32 x, f32 y) noexcept override;
+        void update_geometry() noexcept override;
+        void set_parent(Object *) noexcept override;
+        void set_renderer(SDL_Renderer *) noexcept override;
     };
 
 }

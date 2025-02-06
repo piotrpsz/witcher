@@ -11,7 +11,8 @@
 namespace Witcher {
     class Text;
 
-    class Button : public Widget {
+    class Button final : public Widget {
+        Text* text_;
         bool pressed_ = false;
         std::optional<u64> tickcounter_{};
     public:
@@ -27,7 +28,11 @@ namespace Witcher {
 
         void move_fixed(int x, int y) noexcept override;
         void update() noexcept override;
+        void update_geometry() noexcept override;
         void draw() noexcept override;
+
+        void set_parent(Object *) noexcept override;
+        void set_renderer(SDL_Renderer *) noexcept override;
 
     private:
     };

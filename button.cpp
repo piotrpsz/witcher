@@ -18,24 +18,32 @@ namespace Witcher {
     ****************************************************************/
 
     Button::Button(std::string text, Widget* const parent) :
-        Widget(ObjectType::Button, parent)
+        Widget(ObjectType::Button, parent),
+        text_{new Text(std::move(text), this)}
     {
-        if (parent) {
-            set_parent(parent);
-            set_renderer(parent->renderer());
-        }
-        set_visible(true);
-        set_visible_frame(true);
-        set_resizeable(true);
-
-        auto const child = new Text(std::move(text), this);
-        {
-            const auto [w, h] = child->frame().size;
-            set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
-            child->set_frame(area());
-        }
-        add_child(child);
+        add_child(text_);
     }
+
+    void Button::set_parent(Object* const parent) noexcept {
+        parent_ = nullptr;
+        renderer_ = nullptr;
+
+        if (parent) {
+            parent_ = parent;
+            set_renderer(parent->renderer());
+            text_->set_parent(this);
+        }
+    }
+
+    void Button::set_renderer(SDL_Renderer* const renderer) noexcept {
+        if (renderer) {
+            set_visible(true);
+            set_visible_frame(true);
+            set_resizeable(true);
+            renderer_ = renderer;
+        }
+    }
+
 
     /****************************************************************
     *                                                               *
@@ -82,6 +90,14 @@ namespace Witcher {
 
     void Button::mouse_double_up(MouseEvent event) noexcept {
     }
+
+
+    void Button::update_geometry() noexcept {
+        const auto [w, h] = text_->frame().size;
+        set_frame({0, 0, w + padding().left+padding().right, h + padding().top+padding().bottom});
+        text_->set_frame(area());
+    }
+
 
     /****************************************************************
     *                                                               *

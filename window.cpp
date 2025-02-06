@@ -27,7 +27,7 @@ namespace Witcher {
             box::print_error("Failed to create window and renderer: {}\n", SDL_GetError());
             exit(1);
         }
-        set_renderer(renderer);
+        renderer_ = renderer;
 
         display_id_ = SDL_GetDisplayForWindow(window_);
         SDL_HideWindow(window_);
@@ -39,10 +39,15 @@ namespace Witcher {
         SDL_DestroyWindow(window_);
     }
 
+    void Window::set_parent(Object *) noexcept {}
+
+    void Window::set_renderer(SDL_Renderer* const renderer) noexcept {}
+
     void Window::show() noexcept {
         SDL_ShowWindow(window_);
         set_visible(true);
         update_frame();
+        update_geometry();
     }
 
     void Window::move(int const x, int const y) noexcept {
@@ -51,6 +56,12 @@ namespace Witcher {
             return;
         }
         box::print_error("Failed to move window to position: {}\n", SDL_GetError());
+    }
+
+    void Window::update_geometry() noexcept {
+        for (auto const child : children()) {
+            child->update_geometry();
+        }
     }
 
     void Window::move_center(int display) noexcept {
