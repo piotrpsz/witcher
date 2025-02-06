@@ -16,7 +16,6 @@ add_library(witcher
         types.h
         widget.cpp
         widget.h
-        layout.cpp
         layout.h
         witcher.hpp
         object.cpp
@@ -37,7 +36,8 @@ add_library(witcher
         application.cpp
         application.h
         event.h
-        event.cpp)
+        event.cpp
+        layout.cpp)
 
 add_subdirectory(toolbox)
 

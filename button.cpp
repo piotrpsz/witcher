@@ -9,6 +9,8 @@
 #include "helpers/draw.h"
 
 namespace Witcher {
+    using namespace bee;
+
     /****************************************************************
     *                                                               *
     *                 C T O R   w i t h   t e x t                   *

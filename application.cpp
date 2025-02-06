@@ -103,11 +103,20 @@ namespace Witcher {
                         for (auto const& win : windows_)
                             win->set_visible(true);
                         break;
+                    case SDL_EVENT_WINDOW_MOVED: {
+                        // auto e = event.window;
+                        // auto x = e.data1;
+                        // auto y = e.data2;
+                        // box::println("{}, {}", x, y);
+                        break;
+                    }
+
 
                     // Mouse Events ---------------------------------
                     case SDL_EVENT_MOUSE_BUTTON_DOWN: {
                         // box::print("{}\n", event::to_string(event.type));
                         MouseEvent mouse_event{event.button};
+                        box::println("Mouse button down: {}", mouse_event);
                         auto const [x,y] = mouse_event.pos();
 
                         for (auto const& win : windows_) {

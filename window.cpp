@@ -89,6 +89,16 @@ namespace Witcher {
         return {};
     }
 
+    Object* Window::contains_point(f32 const x, f32 const y) noexcept {
+        if (focusable()) {
+            for (auto const child : children())
+                if (child->contains_point(x, y))
+                    return child;
+
+            return this;
+        }
+        return {};
+    }
 
     std::optional<Point> Window::window_pos() const noexcept {
         Point pos{};
