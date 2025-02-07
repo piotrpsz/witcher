@@ -50,23 +50,16 @@ namespace Witcher {
 
 
     Application::~Application() {
-        for (auto win : windows_)
-            win.reset();
+        delete window_;
+        window_ = nullptr;
 
         TTF_Quit();
         SDL_Quit();
     }
 
-    void Application::add_child(std::shared_ptr<Window> win) noexcept {
-        windows_.push_back(std::move(win));
-    }
-
     void Application::run() noexcept {
-        for (const auto& win : windows_) {
-            win->prepare();
-            win->show();
-        }
-
+        window_->prepare();
+        window_->show();
         main_loop();
     }
 
@@ -94,13 +87,11 @@ namespace Witcher {
                         break;
                     case SDL_EVENT_WINDOW_MINIMIZED:
                         // box::print("{}\n", event::to_string(event.type));
-                        for (auto const& win : windows_)
-                            win->set_visible(false);
+                        window_->set_visible(false);
                         break;
                     case SDL_EVENT_WINDOW_RESTORED:
                         // box::print("{}\n", event::to_string(event.type));
-                        for (auto const& win : windows_)
-                            win->set_visible(true);
+                        window_->set_visible(true);
                         break;
                     case SDL_EVENT_WINDOW_MOVED: {
                         // auto e = event.window;
@@ -113,33 +104,22 @@ namespace Witcher {
 
                     // Mouse Events ---------------------------------
                     case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-                        // box::print("{}\n", event::to_string(event.type));
                         MouseEvent mouse_event{event.button};
-                        box::println("Mouse button down: {}", mouse_event);
+                        // box::println("Mouse button down: {}", mouse_event);
                         auto const [x,y] = mouse_event.pos();
-
-                        for (auto const& win : windows_) {
-                            if (auto const widget = win->contains_point(x, y)) {
-                                if (mouse_event.clicks() == 1)
-                                    widget->mouse_down(mouse_event);
-                                else if (mouse_event.clicks() == 2)
-                                    widget->mouse_double_down(mouse_event);
-                                break;
-                            }
+                        if (auto const widget = window_->contains_point(x, y)) {
+                            if (mouse_event.clicks() == 1) widget->mouse_down(mouse_event);
+                            else if (mouse_event.clicks() == 2) widget->mouse_double_down(mouse_event);
                         }
+
                         break;
                     }
                     case SDL_EVENT_MOUSE_BUTTON_UP: {
-                        // box::print("{}\n", event::to_string(event.type));
                         MouseEvent mouse_event{event.button};
                         auto const [x,y] = mouse_event.pos();
-
-                        for (auto const& win : windows_) {
-                            if (auto const widget = win->contains_point(x, y)) {
-                                if (mouse_event.clicks() == 1) widget->mouse_up(mouse_event);
-                                else if (mouse_event.clicks() == 2) widget->mouse_double_up(mouse_event);
-                                break;
-                            }
+                        if (auto const widget = window_->contains_point(x, y)) {
+                            if (mouse_event.clicks() == 1) widget->mouse_up(mouse_event);
+                            else if (mouse_event.clicks() == 2) widget->mouse_double_up(mouse_event);
                         }
                         break;
                     }
@@ -153,21 +133,14 @@ namespace Witcher {
     }
 
     void Application::update() {
-        while (SDL_GetTicks() < (tick_counter_ + DEADLINE)) {
-        }
+        while (SDL_GetTicks() < (tick_counter_ + DEADLINE)) {}
         tick_counter_ = SDL_GetTicks();
 
-        for (auto const& win : windows_)
-            win->update();
-
-        for (auto const& win : windows_)
-            win->draw();
+        window_->prepare();
+        window_->draw();
     }
 
     bool Application::can_exit() const noexcept {
-        for (auto const& win : windows_)
-            if (!win->can_close())
-                return false;
-        return true;
+        return window_->can_close();
     }
 }

@@ -152,6 +152,7 @@ namespace Witcher {
     }
 
     Size Button::size_min() const noexcept {
+        // When the button contains an image, its size must also be taken into account
         const auto [w, h] = text_->frame().size;
         return {
             .w = w + padding().left + padding().right,

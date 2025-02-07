@@ -5,7 +5,7 @@
 /*------- include files:
 -------------------------------------------------------------------*/
 #include "window.h"
-
+#include "application.h"
 #include "thema.h"
 #include "types.h"
 #include "toolbox/all.h"
@@ -13,17 +13,18 @@
 namespace Witcher {
     using namespace bee;
 
-    Window::Window(std::string const& title, int width, int height) :
+    Window::Window(Application& app, std::string const& title, int width, int height) :
         Widget(ObjectType::Window, this)
     {
         constexpr auto flags =
             SDL_WINDOW_RESIZABLE
             | SDL_WINDOW_HIDDEN
+            | SDL_WINDOW_VULKAN
             | SDL_WINDOW_HIGH_PIXEL_DENSITY
             | SDL_WINDOW_INPUT_FOCUS
             | SDL_WINDOW_MOUSE_FOCUS;
         SDL_Renderer* renderer;
-        if (!SDL_CreateWindowAndRenderer(title.c_str(), 0, 0, flags, &window_, &renderer)) {
+        if (!SDL_CreateWindowAndRenderer(title.c_str(), width, height, flags, &window_, &renderer)) {
             box::print_error("Failed to create window and renderer: {}\n", SDL_GetError());
             exit(1);
         }
@@ -32,6 +33,9 @@ namespace Witcher {
         display_id_ = SDL_GetDisplayForWindow(window_);
         SDL_HideWindow(window_);
         set_focusable(true);
+
+        // Register the window in application.
+        app.window_ = this;
     }
 
     Window::~Window() {
@@ -58,11 +62,13 @@ namespace Witcher {
     void Window::show() noexcept {
         SDL_ShowWindow(window_);
         set_visible(true);
+        move(frame().pos.x, frame().pos.y);
     }
 
     void Window::move(int const x, int const y) noexcept {
         if (SDL_SetWindowPosition(window_, x, y)) {
             update_frame();
+            box::println("Window::move, window pos: {}", frame().pos);
             return;
         }
         box::print_error("Failed to move window to position: {}\n", SDL_GetError());
@@ -137,11 +143,13 @@ namespace Witcher {
                 if (auto const size = window_size()) {
                     frame().pos = *pos;
                     frame().size = *size;
+                    // box::println("Window::update_frame, window frame: {}", frame());
                     return;
                 }
             }
         }
         box::print_error("Failed to update window's frame: {}\n", SDL_GetError());
+        exit(1);
     }
 
 

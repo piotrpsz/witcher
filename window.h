@@ -10,12 +10,13 @@
 #include <optional>
 
 namespace Witcher {
+    class Application;
 
     class Window : public Widget {
         SDL_Window* window_{};
         SDL_DisplayID display_id_{};
     public:
-        explicit Window(std::string const& title, int width = 640, int height = 400);
+        Window(Application& app, std::string const& title, int width = 640, int height = 400);
         ~Window() override;
 
         void show() noexcept;
