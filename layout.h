@@ -14,25 +14,43 @@ namespace Witcher {
         ~Layout() override = default;
     };
 
-    class HBoxLayout : public Layout {
+    class HBoxLayout final : public Layout {
     public:
         explicit HBoxLayout(Object* parent = nullptr) : Layout(parent) {}
         void update() noexcept override;
         ~HBoxLayout() override = default;
+
+        void prepare() noexcept override;
+        void update_geometry() noexcept override {};
+        void draw() noexcept override {};
+        [[nodiscard]] Size size_min() const noexcept override { return Size(0, 0); };
+        [[nodiscard]] Size size_max() const noexcept override { return Size(0, 0); };
     };
 
-    class VBoxLayout : public Layout {
+    class VBoxLayout final : public Layout {
     public:
         explicit VBoxLayout(Object* parent = nullptr) : Layout(parent) {}
         void update() noexcept override;
         ~VBoxLayout() override = default;
+
+        void prepare() noexcept override {};
+        void update_geometry() noexcept override {};
+        void draw() noexcept override {};
+        Size size_min() const noexcept override { return Size(0, 0); }
+        Size size_max() const noexcept override { return Size(0, 0); }
     };
 
-    class GridLayout : public Layout {
+    class GridLayout final : public Layout {
     public:
         explicit GridLayout(Object* parent = nullptr) : Layout(parent) {}
         void update() noexcept override;
         ~GridLayout() override = default;
+
+        void prepare() noexcept override {};
+        void update_geometry() noexcept override {};
+        void draw() noexcept override {};
+        [[nodiscard]] Size size_min() const noexcept override { return Size(0, 0); };
+        [[nodiscard]] Size size_max() const noexcept override { return Size(0, 0); };
     };
 
 }

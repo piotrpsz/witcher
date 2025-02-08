@@ -53,6 +53,7 @@ namespace Witcher {
         [[nodiscard]] virtual Object* contains_point(f32 x, f32 y) noexcept;
         [[nodiscard]] std::vector<Object*> const& children() const noexcept { return children_; }
         [[nodiscard]] Padding const& padding() const noexcept { return padding_; }
+        [[nodiscard]] Padding& padding() noexcept { return padding_; }
 
         /*
         // Iterate over children.

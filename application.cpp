@@ -58,6 +58,8 @@ namespace Witcher {
     }
 
     void Application::run() noexcept {
+        displays();
+
         window_->prepare();
         window_->show();
         main_loop();
@@ -135,12 +137,29 @@ namespace Witcher {
     void Application::update() {
         while (SDL_GetTicks() < (tick_counter_ + DEADLINE)) {}
         tick_counter_ = SDL_GetTicks();
-
-        window_->prepare();
         window_->draw();
     }
 
     bool Application::can_exit() const noexcept {
         return window_->can_close();
+    }
+
+    void Application::displays() {
+        int count = 0;
+        SDL_DisplayID* ptr = SDL_GetDisplays(&count);
+        for (int i = 0; i < count; i++) {
+            auto id = ptr[i];
+            auto const name = std::string(SDL_GetDisplayName(id)).c_str();
+            SDL_Rect rect;
+            SDL_GetDisplayBounds(id, &rect);
+            SDL_Rect available;
+            SDL_GetDisplayUsableBounds(id, &available);
+            box::print("{}, {} ({}, {}, {}, {}) => ({}, {}, {}, {})\n",
+                id, name,
+                rect.x, rect.y, rect.w, rect.h,
+                available.x, available.y, available.w, available.h);
+        }
+
+        SDL_free(ptr);
     }
 }

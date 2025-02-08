@@ -23,6 +23,7 @@ namespace Witcher {
 
     enum class ObjectType {
         None = 0,
+        MenuBar,
         Text, Button, Layout,
         Window
     };

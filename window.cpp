@@ -19,7 +19,7 @@ namespace Witcher {
         constexpr auto flags =
             SDL_WINDOW_RESIZABLE
             | SDL_WINDOW_HIDDEN
-            | SDL_WINDOW_VULKAN
+            // | SDL_WINDOW_VULKAN
             | SDL_WINDOW_HIGH_PIXEL_DENSITY
             | SDL_WINDOW_INPUT_FOCUS
             | SDL_WINDOW_MOUSE_FOCUS;
@@ -43,6 +43,16 @@ namespace Witcher {
         SDL_DestroyWindow(window_);
     }
 
+    bool Window::set_content(Object* const content) noexcept {
+        if (children().empty()) {
+            add_child(content);
+            return true;
+        }
+        box::println_error("Failed to set content. The window already has content.");
+        return {};
+    }
+
+
     /****************************************************************
     *                                                               *
     *                       p r e p a r e                           *
@@ -52,6 +62,7 @@ namespace Witcher {
     void Window::prepare() noexcept {
         update_frame();
         update_geometry();
+        if (menu_bar_) menu_bar_->prepare();
         for (const auto it : children()) {
             it->set_parent(this);
             it->prepare();
@@ -75,6 +86,8 @@ namespace Witcher {
     }
 
     void Window::update_geometry() noexcept {
+        if (menu_bar_) menu_bar_->update_geometry();
+
         for (auto const child : children()) {
             child->update_geometry();
         }
@@ -82,12 +95,12 @@ namespace Witcher {
 
     void Window::move_center(int display) noexcept {
         int display_count{};
-        SDL_DisplayID* const ptr = SDL_GetDisplays(&display_count);
+        SDL_DisplayID const* const screen = SDL_GetDisplays(&display_count);
         if (display_count >= display)
             display = display_count - 1;
 
         SDL_Rect display_rect{};
-        if (SDL_GetDisplayUsableBounds(display, &display_rect)) {
+        if (SDL_GetDisplayBounds(screen[display], &display_rect)) {
             if (auto size = window_size()) {
                 auto const [w, h] = size.value();
                 auto const x = display_rect.x + (display_rect.w - w) / 2;
@@ -163,6 +176,8 @@ namespace Witcher {
         auto const [r, g, b, a] = thema::DEFAULT_WINDOW_BACKGROUND;
         SDL_SetRenderDrawColor(renderer(), r, g, b, a);
         SDL_RenderClear(renderer());
+
+        if (menu_bar_) menu_bar_->draw();
 
         for (const auto child: children())
             child->draw();

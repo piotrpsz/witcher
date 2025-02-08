@@ -37,7 +37,9 @@ add_library(witcher
         application.h
         event.h
         event.cpp
-        layout.cpp)
+        layout.cpp
+        menu/menu_bar.cpp
+        menu/menu_bar.h)
 
 add_subdirectory(toolbox)
 

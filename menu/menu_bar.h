@@ -1,23 +1,23 @@
 //
-// Created by piotr on 05.02.25.
+// Created by piotr on 08.02.25.
 //
 
 #pragma once
 
-#include "widget.h"
-#include "mouse_event.h"
-#include <optional>
+#include "../widget.h"
+#include <vector>
+#include <string>
 
 namespace Witcher {
-    class Text;
+    class Button;
 
-    class Button final : public Widget {
-        Text* text_;
-        bool pressed_ = false;
-        std::optional<u64> tickcounter_{};
+    class MenuBar final : public Widget {
+        std::vector<Button *> buttons_;
     public:
-        explicit Button(std::string text, Widget* parent = nullptr);
-        ~Button() override = default;
+        explicit MenuBar(Widget* parent);
+        ~MenuBar() override;
+
+        void add(std::string const& label) noexcept;
 
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;
@@ -26,12 +26,10 @@ namespace Witcher {
         void mouse_double_down(MouseEvent event) noexcept override;
         void mouse_double_up(MouseEvent event) noexcept override;
 
-        void move_fixed(int x, int y) noexcept override;
         void update() noexcept override;
         void update_geometry() noexcept override;
         void draw() noexcept override;
         void prepare() noexcept override;
-
-    private:
     };
 }
+

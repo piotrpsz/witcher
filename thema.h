@@ -54,6 +54,7 @@ namespace Witcher::thema {
     static constexpr SDL_Color DARK_4    {0x24, 0x1f, 0x31, SDL_ALPHA_OPAQUE };
     static constexpr SDL_Color DARK_5    {0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE };
 
+    static constexpr SDL_Color DEFAULT_MENU_BACKGROUND    {0x33, 0x33, 0x33, SDL_ALPHA_OPAQUE };
 
     static constexpr SDL_Color DEFAULT_WINDOW_BACKGROUND{0x1e, 0x1f, 0x22, SDL_ALPHA_OPAQUE};
     static constexpr SDL_Color DEFAULT_WIDGET_BACKGROUND{0x2e, 0x2f, 0x32, SDL_ALPHA_OPAQUE};

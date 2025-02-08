@@ -9,16 +9,27 @@
 #include "widget.h"
 #include <optional>
 
+#include "layout.h"
+#include "menu/menu_bar.h"
+
 namespace Witcher {
     class Application;
+    class MenuBar;
 
     class Window : public Widget {
+        MenuBar* menu_bar_{};
         SDL_Window* window_{};
         SDL_DisplayID display_id_{};
     public:
         Window(Application& app, std::string const& title, int width = 640, int height = 400);
         ~Window() override;
 
+        MenuBar* menu_bar() noexcept {
+            menu_bar_ = new MenuBar(this);
+            return menu_bar_;
+        }
+
+        bool set_content(Object* content) noexcept;
         void show() noexcept;
 
         [[nodiscard]] std::optional<Size> window_size() const noexcept;
