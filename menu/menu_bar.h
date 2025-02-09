@@ -9,10 +9,10 @@
 #include <string>
 
 namespace Witcher {
-    class Button;
+    class MenuButton;
 
     class MenuBar final : public Widget {
-        std::vector<Button *> buttons_;
+        std::vector<MenuButton*> buttons_;
     public:
         explicit MenuBar(Widget* parent);
         ~MenuBar() override;
@@ -21,6 +21,9 @@ namespace Witcher {
 
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;
+
+        Object* contains_point(f32 x, f32 y) noexcept override;
+
         void mouse_down(MouseEvent event) noexcept override;
         void mouse_up(MouseEvent event) noexcept override;
         void mouse_double_down(MouseEvent event) noexcept override;

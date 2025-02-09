@@ -17,9 +17,9 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    Button::Button(std::string text, Widget* const parent) :
+    Button::Button(std::string_view const text, Widget* const parent) :
         Widget(ObjectType::Button, parent),
-        text_{new Text(std::move(text), this)}
+        text_{new Text(text, this)}
     {
         set_parent(parent);
         add_child(text_);
@@ -35,6 +35,8 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::prepare() noexcept {
+        text_->set_color(*colors.normal_foreground);
+
         for (const auto it : children()) {
             set_parent(this);
             it->prepare();
@@ -43,6 +45,7 @@ namespace Witcher {
         frame().resize(size_min());
         update_area(frame());
         text_->set_frame(area());
+
     }
 
     /****************************************************************
@@ -136,14 +139,14 @@ namespace Witcher {
         if (!visible()) return;
 
         // Draw frame if needed.
-        if (visible_frame()) {
-            if (pressed_) {
-                draw::fill_rect(renderer(), frame(), thema::DARK_3);
+        if (pressed_) {
+            draw::fill_rect(renderer(), frame(), *colors.selected_background);
+            if (visible_frame())
                 draw::rect(renderer(), frame(), thema::BLUE_5);
-            } else {
-                draw::fill_rect(renderer(), frame(), thema::DEFAULT_WIDGET_BACKGROUND);
+        } else {
+            draw::fill_rect(renderer(), frame(), *colors.normal_background);
+            if (visible_frame())
                 draw::rect(renderer(), frame(), thema::DEFAULT_FRAME_COLOR);
-            }
         }
 
         // Draw children.

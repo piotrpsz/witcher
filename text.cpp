@@ -12,21 +12,23 @@
 
 namespace Witcher {
 
-    Text::Text(std::string text, Widget* const parent) :
+    Text::Text(std::string_view const text,  Widget* const parent) :
         Widget(ObjectType::Text, parent),
-        text_(std::move(text))
+        text_(text)
     {
         set_parent(parent);
         set_visible(true);
     }
 
     void Text::prepare() noexcept {
-        if (auto const font = FontStore::self().font("Mono-Regular", 10.5)) {
-            if (auto rect = font->geometry(text_)) {
-                font_ = font;
-                texture_ = font_->texture_for(renderer(), text_, thema::LIGHT_3);
-                auto&& [w, h] = *rect;
-                set_frame({0, 0,w + padding().left + padding().right, h + padding().top + padding().bottom});
+        if (colors.normal_foreground) {
+            if (auto const font = FontStore::self().font("Mono-Regular", 10.5)) {
+                if (auto rect = font->geometry(text_)) {
+                    font_ = font;
+                    texture_ = font_->texture_for(renderer(), text_, *colors.normal_foreground);
+                    auto&& [w, h] = *rect;
+                    set_frame({0, 0,w + padding().left + padding().right, h + padding().top + padding().bottom});
+                }
             }
         }
     }

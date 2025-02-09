@@ -6,17 +6,18 @@
 
 #include "widget.h"
 #include "mouse_event.h"
+#include <string_view>
 #include <optional>
 
 namespace Witcher {
     class Text;
 
-    class Button final : public Widget {
+    class Button : public Widget {
         Text* text_;
         bool pressed_ = false;
         std::optional<u64> tickcounter_{};
     public:
-        explicit Button(std::string text, Widget* parent = nullptr);
+        explicit Button(std::string_view text, Widget* parent = nullptr);
         ~Button() override = default;
 
         [[nodiscard]] Size size_min() const noexcept override;

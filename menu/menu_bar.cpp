@@ -3,8 +3,8 @@
 //
 
 #include "menu_bar.h"
+#include "menu_button.h"
 #include "../types.h"
-#include "../button.h"
 #include "../toolbox/all.h"
 #include "../helpers/draw.h"
 #include "../thema.h"
@@ -25,25 +25,12 @@ namespace Witcher {
     }
 
     void MenuBar::add(std::string const& label) noexcept {
-        auto button = new Button(label, this);
+        const auto button = new MenuButton(label, this);
         button->set_visible_frame(false);
-        button->padding().left = 0;
-        button->padding().right = 0;
-        button->padding().top = 2;
-        button->padding().bottom = 2;
-        buttons_.push_back(std::move(button));
+        button->padding() = {.left = 0, .top = 3, .right = 0, .bottom = 3};
+        buttons_.push_back(button);
     }
 
-    /*
-    *        auto const n = std::accumulate(
-                text.cbegin(),
-                text.cend(),
-                size_t{},
-                [delimiter](int const count, char const c) {
-                    return c == delimiter ? count + 1 : count;
-                }
-            );
-    */
     Size MenuBar::size_min() const noexcept {
         Size min{};
         for (auto const& button : buttons_) {
@@ -53,7 +40,7 @@ namespace Witcher {
                 min.h = std::max(min.h, h);
             }
             // 3 pixels gap between buttons
-            min.w += 3 * static_cast<int>(buttons_.size() - 1);
+            min.w += static_cast<int>(buttons_.size() - 1);
             return {min.w, min.h};
         }
         return min;
@@ -77,11 +64,24 @@ namespace Witcher {
         for (auto const& button : buttons_) {
             button->move(x, 0);
             x += button->size_min().w;
-            x += 3;
+            x += 0;
         }
     };
 
-    Size MenuBar::size_max() const noexcept {}
+    Size MenuBar::size_max() const noexcept {
+        return frame().size;
+    }
+
+
+    Object *MenuBar::contains_point(f32 const x, f32 const y) noexcept {
+        if (frame().contains_point(x, y)) {
+            for (auto const& button : buttons_)
+                if (button->contains_point(x, y))
+                    return button;
+            return this;
+        }
+        return nullptr;
+    }
 
     void MenuBar::mouse_down(MouseEvent event) noexcept {}
     void MenuBar::mouse_up(MouseEvent event) noexcept {}
@@ -95,6 +95,9 @@ namespace Witcher {
 
         for (auto const& button : buttons_)
             button->draw();
+        // for (auto const& child : children()) {
+        //     child->draw();
+        // }
     };
 
 }

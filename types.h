@@ -7,6 +7,7 @@
 ---------------------------------------------------------*/
 #include <cstdint>
 #include <format>
+#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
 
 namespace Witcher {
@@ -84,6 +85,12 @@ namespace Witcher {
 
     struct Padding {
         int left{}, top{}, right{}, bottom{};
+    };
+    struct Colors {
+        std::optional<SDL_Color> normal_background{};
+        std::optional<SDL_Color> normal_foreground{};
+        std::optional<SDL_Color> selected_background{};
+        std::optional<SDL_Color> selected_foreground{};
     };
 }
 

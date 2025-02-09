@@ -26,6 +26,7 @@ namespace Witcher {
 
         MenuBar* menu_bar() noexcept {
             menu_bar_ = new MenuBar(this);
+            // add_child(menu_bar_);
             return menu_bar_;
         }
 

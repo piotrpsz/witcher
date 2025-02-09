@@ -5,6 +5,7 @@
 #pragma once
 
 #include "types.h"
+#include "thema.h"
 #include "mouse_event.h"
 #include <vector>
 #include <bitset>
@@ -25,6 +26,8 @@ namespace Witcher {
             .bottom = DEFAULT_BOTTOM_PADDING};
         Object* parent_{};
         SDL_Renderer *renderer_{};
+    protected:
+        Colors colors;
     public:
         explicit Object(ObjectType const type, Object* const parent = nullptr) : type_{type}, parent_{parent} {}
         virtual ~Object() noexcept;
