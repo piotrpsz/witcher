@@ -41,7 +41,9 @@ add_library(witcher
         menu/menu_bar.cpp
         menu/menu_bar.h
         menu/menu_button.cpp
-        menu/menu_button.h)
+        menu/menu_button.h
+        event/user_event.h
+        event/event_controller.h)
 
 add_subdirectory(toolbox)
 

@@ -7,7 +7,7 @@
 #include <SDL3/SDL.h>
 
 namespace Witcher {
-        std::unordered_map<int, char const* const> event::data_ {
+        std::unordered_map<uint, char const* const> event::data_ {
         {SDL_EVENT_FIRST, "SDL_EVENT_FIRST"},
         /* Application events */
         {SDL_EVENT_QUIT, "SDL_EVENT_QUIT"},

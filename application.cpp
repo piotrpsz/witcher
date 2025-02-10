@@ -6,9 +6,12 @@
 -------------------------------------------------------------------*/
 #include "application.h"
 #include "window.h"
+#include "types.h"
 #include "toolbox/all.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+
+#include "event/event_controller.h"
 
 namespace Witcher {
     using namespace bee;
@@ -95,10 +98,10 @@ namespace Witcher {
                         window_->set_visible(true);
                         break;
                     case SDL_EVENT_WINDOW_MOVED: {
-                        auto e = event.window;
-                        auto x = e.data1;
-                        auto y = e.data2;
-                        box::println("{}, {}", x, y);
+                        // auto e = event.window;
+                        // auto x = e.data1;
+                        // auto y = e.data2;
+                        // box::println("{}, {}", x, y);
                         break;
                     }
 
@@ -122,6 +125,11 @@ namespace Witcher {
                             if (mouse_event.clicks() == 1) widget->mouse_up(mouse_event);
                             else if (mouse_event.clicks() == 2) widget->mouse_double_up(mouse_event);
                         }
+                        break;
+                    }
+                    case SDL_EVENT_MOUSE_MOTION: {
+                        SDL_MouseMotionEvent const e = event.motion;
+                        EventController::self().send(UserEvent::MouseMove, std::pair{e.x, e.y});
                         break;
                     }
 

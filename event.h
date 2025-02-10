@@ -9,7 +9,7 @@
 
 namespace Witcher {
     class event {
-        static std::unordered_map<int, char const* const> data_;
+        static std::unordered_map<uint, char const* const> data_;
     public:
         static std::string to_string(uint id);
     };

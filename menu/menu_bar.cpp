@@ -4,6 +4,7 @@
 
 #include "menu_bar.h"
 #include "menu_button.h"
+#include "../event/event_controller.h"
 #include "../types.h"
 #include "../toolbox/all.h"
 #include "../helpers/draw.h"
@@ -18,10 +19,25 @@ namespace Witcher {
         set_visible(true);
         set_visible_frame(false);
         set_resizeable(true);
+        EventController::self().append(this, UserEvent::MouseMove);
+        EventController::self().print_content();
     }
 
     MenuBar::~MenuBar() {
-        box::println("MenuBar::~MenuBar");
+        EventController::self().remove(this);
+        EventController::self().print_content();
+    }
+
+    void MenuBar::user_event(UserEvent event) noexcept {
+        switch (event.id()) {
+            case UserEvent::MouseMove:
+                if (auto data = event.data(); !data.empty()) {
+                    auto&& [x, y] = std::get<std::pair<f32, f32>>(data[0]);
+                    box::println("MenuBar::user_event: MouseMove {}, {}", x, y);
+                    break;
+                }
+            default: {}
+        }
     }
 
     void MenuBar::add(std::string const& label) noexcept {
@@ -83,7 +99,10 @@ namespace Witcher {
         return nullptr;
     }
 
-    void MenuBar::mouse_down(MouseEvent event) noexcept {}
+    void MenuBar::mouse_down(MouseEvent event) noexcept {
+
+    }
+
     void MenuBar::mouse_up(MouseEvent event) noexcept {}
     void MenuBar::mouse_double_down(MouseEvent event) noexcept {}
     void MenuBar::mouse_double_up(MouseEvent event) noexcept {}

@@ -23,6 +23,7 @@ namespace Witcher {
         [[nodiscard]] Size size_max() const noexcept override;
 
         Object* contains_point(f32 x, f32 y) noexcept override;
+        void user_event(UserEvent) noexcept override;
 
         void mouse_down(MouseEvent event) noexcept override;
         void mouse_up(MouseEvent event) noexcept override;

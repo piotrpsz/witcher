@@ -39,6 +39,7 @@ namespace Witcher {
     }
 
     Window::~Window() {
+        if (menu_bar_) delete menu_bar_;
         SDL_DestroyRenderer(renderer());
         SDL_DestroyWindow(window_);
     }
