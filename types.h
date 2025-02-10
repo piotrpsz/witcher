@@ -22,6 +22,9 @@ namespace Witcher {
     using f32 = float;
     using f64 = double;
 
+    constexpr bool ON = true;
+    constexpr bool OFF = false;
+
     enum class ObjectType {
         None = 0,
         MenuBar,
@@ -112,5 +115,12 @@ template <>
 struct std::formatter<Witcher::Rect> : std::formatter<std::string> {
     auto format(Witcher::Rect const& r, format_context& ctx) const {
         return formatter<std::string>::format(std::format("[{}, {}]", r.pos, r.size), ctx);
+    }
+};
+
+template <>
+struct std::formatter<SDL_Rect> : std::formatter<std::string> {
+    auto format(SDL_Rect const& r, format_context& ctx) const {
+        return formatter<std::string>::format(std::format("[({},{}), ({},{})]", r.x, r.y, r.w,  r.h), ctx);
     }
 };

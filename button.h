@@ -14,11 +14,16 @@ namespace Witcher {
 
     class Button : public Widget {
         Text* text_;
+        Text* text_selected_;
         bool pressed_ = false;
+        bool three_state_ = false;
         std::optional<u64> tickcounter_{};
     public:
         explicit Button(std::string_view text, Widget* parent = nullptr);
         ~Button() override = default;
+
+        void set_three_state(bool const state) noexcept { three_state_ = state; }
+        [[nodiscard]] bool is_three_state() const noexcept { return three_state_; }
 
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;

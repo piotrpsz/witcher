@@ -96,13 +96,15 @@ namespace Witcher {
     void Window::move_center(int display) noexcept {
         int display_count{};
         SDL_DisplayID const* const screen = SDL_GetDisplays(&display_count);
-        if (display_count >= display)
+        if (display > (display_count - 1))
             display = display_count - 1;
 
         SDL_Rect display_rect{};
         if (SDL_GetDisplayBounds(screen[display], &display_rect)) {
             if (auto size = window_size()) {
                 auto const [w, h] = size.value();
+                auto const name = std::string(SDL_GetDisplayName(screen[display])).c_str();
+                box::println("Selected display: {}, {}\n", name, display_rect);
                 auto const x = display_rect.x + (display_rect.w - w) / 2;
                 auto const y = display_rect.y + (display_rect.h - h) / 2;
                 move(x, y);

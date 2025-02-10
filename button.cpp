@@ -19,10 +19,12 @@ namespace Witcher {
 
     Button::Button(std::string_view const text, Widget* const parent) :
         Widget(ObjectType::Button, parent),
-        text_{new Text(text, this)}
+        text_{new Text(text, this)},
+        text_selected_(new Text(text, this))
     {
         set_parent(parent);
         add_child(text_);
+        add_child(text_selected_);
         set_visible(true);
         set_visible_frame(true);
         set_resizeable(true);
@@ -36,6 +38,7 @@ namespace Witcher {
 
     void Button::prepare() noexcept {
         text_->set_color(*colors.normal_foreground);
+        text_selected_->set_color(*colors.selected_foreground);
 
         for (const auto it : children()) {
             set_parent(this);
@@ -45,7 +48,7 @@ namespace Witcher {
         frame().resize(size_min());
         update_area(frame());
         text_->set_frame(area());
-
+        text_selected_->set_frame(area());
     }
 
     /****************************************************************
@@ -66,8 +69,13 @@ namespace Witcher {
 
     void Button::mouse_down(MouseEvent event) noexcept {
         if (focusable()) {
-            set_focus(true);
-            pressed_ = true;
+            if (pressed_ && is_three_state() && focus()) {
+                set_focus(OFF);
+                pressed_ = OFF;
+                return;
+            }
+            set_focus(ON);
+            pressed_ = ON;
         }
     }
 
@@ -78,7 +86,7 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::mouse_up(MouseEvent event) noexcept {
-        if (focus()) {
+        if (focus() && !is_three_state()) {
             tickcounter_ = SDL_GetTicks();
         }
     }
@@ -143,15 +151,17 @@ namespace Witcher {
             draw::fill_rect(renderer(), frame(), *colors.selected_background);
             if (visible_frame())
                 draw::rect(renderer(), frame(), thema::BLUE_5);
+            text_selected_->draw();
         } else {
             draw::fill_rect(renderer(), frame(), *colors.normal_background);
             if (visible_frame())
                 draw::rect(renderer(), frame(), thema::DEFAULT_FRAME_COLOR);
+            text_->draw();
         }
 
         // Draw children.
-        for (auto const child : children())
-            child->draw();
+        // for (auto const child : children())
+            // text_->draw();
     }
 
     Size Button::size_min() const noexcept {
