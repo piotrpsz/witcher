@@ -46,6 +46,7 @@ namespace Witcher {
             box::println_error("Failed to initialize TTF - {}\n", SDL_GetError());
             exit(2);
         }
+        displays();
     }
 
 
@@ -58,8 +59,6 @@ namespace Witcher {
     }
 
     void Application::run() noexcept {
-        displays();
-
         window_->prepare();
         window_->show();
         main_loop();
@@ -96,10 +95,10 @@ namespace Witcher {
                         window_->set_visible(true);
                         break;
                     case SDL_EVENT_WINDOW_MOVED: {
-                        // auto e = event.window;
-                        // auto x = e.data1;
-                        // auto y = e.data2;
-                        // box::println("{}, {}", x, y);
+                        auto e = event.window;
+                        auto x = e.data1;
+                        auto y = e.data2;
+                        box::println("{}, {}", x, y);
                         break;
                     }
 
@@ -145,6 +144,7 @@ namespace Witcher {
     }
 
     void Application::displays() {
+        box::println("Available displays:");
         int count = 0;
         SDL_DisplayID* ptr = SDL_GetDisplays(&count);
         for (int i = 0; i < count; i++) {
@@ -154,7 +154,7 @@ namespace Witcher {
             SDL_GetDisplayBounds(id, &rect);
             SDL_Rect available;
             SDL_GetDisplayUsableBounds(id, &available);
-            box::print("{}, {} ({}, {}, {}, {}) => ({}, {}, {}, {})\n",
+            box::print("\t id: {}, name: {}, bounds: ({}, {}, {}, {}), usable: ({}, {}, {}, {})\n",
                 id, name,
                 rect.x, rect.y, rect.w, rect.h,
                 available.x, available.y, available.w, available.h);
