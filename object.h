@@ -12,6 +12,8 @@
 #include <SDL3/SDL.h>
 
 #include "event/user_event.h"
+#include "toolbox/toolbox.h"
+#include "toolbox/crypto/crypto.h"
 
 namespace Witcher {
 
@@ -36,6 +38,8 @@ namespace Witcher {
 
         // SETTERS
         void set_parent(Object* const parent) noexcept {
+            // if (type_ == ObjectType::Button)
+            //     bee::box::println("Object::set_parent ({}): {} => {}", static_cast<void *>(this), static_cast<void*>(parent_), static_cast<void*>(parent));
             parent_ = parent;
             renderer_ = parent_ ? parent_->renderer_ : nullptr;
             for (const auto child : children_) {
@@ -79,7 +83,7 @@ namespace Witcher {
         void set_enabled(bool const value) noexcept { flags_.set(ENABLED_BIT, value); }
         [[nodiscard]] bool focusable() const noexcept { return flags_.test(FOCUSABLE_BIT); }
         void set_focusable(bool const value) noexcept { flags_.set(FOCUSABLE_BIT, value); }
-        [[nodiscard]] bool focus() const noexcept { return flags_.test(FOCUS_BIT); }
+        [[nodiscard]] bool has_focus() const noexcept { return flags_.test(FOCUS_BIT); }
         void set_focus(bool const value) noexcept {
             if (focusable())
                 flags_.set(FOCUS_BIT, value);

@@ -40,9 +40,9 @@ namespace Witcher {
         text_->set_color(*colors.normal_foreground);
         text_selected_->set_color(*colors.selected_foreground);
 
-        for (const auto it : children()) {
-            set_parent(this);
-            it->prepare();
+        for (const auto child : children()) {
+            child->set_parent(this);
+            child->prepare();
         }
 
         frame().resize(size_min());
@@ -69,7 +69,7 @@ namespace Witcher {
 
     void Button::mouse_down(MouseEvent event) noexcept {
         if (focusable()) {
-            if (pressed_ && is_three_state() && focus()) {
+            if (has_focus() && pressed_ && is_three_state()) {
                 set_focus(OFF);
                 pressed_ = OFF;
                 return;
@@ -86,9 +86,8 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::mouse_up(MouseEvent event) noexcept {
-        if (focus() && !is_three_state()) {
+        if (has_focus() && !is_three_state())
             tickcounter_ = SDL_GetTicks();
-        }
     }
 
     /****************************************************************
@@ -98,7 +97,7 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::mouse_double_down(MouseEvent event) noexcept {
-        if (focus()) {
+        if (has_focus()) {
             bee::box::print("Button::mouse_double_click\n");
         }
     }

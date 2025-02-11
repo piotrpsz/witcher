@@ -13,6 +13,7 @@ namespace Witcher {
 
     class MenuBar final : public Widget {
         std::vector<MenuButton*> buttons_;
+        MenuButton* active_menu_button_{};
     public:
         explicit MenuBar(Widget* parent);
         ~MenuBar() override;
@@ -34,6 +35,12 @@ namespace Witcher {
         void update_geometry() noexcept override;
         void draw() noexcept override;
         void prepare() noexcept override;
+
+    private:
+        void set_active_menu_button(MenuButton* button) noexcept;
+        void refocus(std::pair<f32,f32> pos) noexcept;
+
+        friend class MenuButton;
     };
 }
 

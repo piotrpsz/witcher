@@ -76,6 +76,9 @@ namespace Witcher {
             if (x > fx1 || y > fy1) return {};
             return true;
         }
+        [[nodiscard]] bool contains_point(std::pair<f32,f32> const pos) const noexcept {
+            return contains_point(pos.first, pos.second);
+        }
         [[nodiscard]] SDL_FRect to_frect() const noexcept {
             return SDL_FRect{
                 .x = static_cast<f32>(pos.x),
@@ -122,5 +125,12 @@ template <>
 struct std::formatter<SDL_Rect> : std::formatter<std::string> {
     auto format(SDL_Rect const& r, format_context& ctx) const {
         return formatter<std::string>::format(std::format("[({},{}), ({},{})]", r.x, r.y, r.w,  r.h), ctx);
+    }
+};
+
+template <>
+struct std::formatter<std::pair<Witcher::f32,Witcher::f32>> : std::formatter<std::string> {
+    auto format(std::pair<Witcher::f32,Witcher::f32> const& pair, format_context& ctx) const {
+        return formatter<std::string>::format(std::format("({},{})", pair.first, pair.second), ctx);
     }
 };

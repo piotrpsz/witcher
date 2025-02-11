@@ -7,9 +7,13 @@
 #include <string_view>
 
 namespace Witcher {
+    class MenuBar;
+
     class MenuButton final : public Button {
     public:
-        explicit MenuButton(std::string_view text, Widget* parent);
+        explicit MenuButton(std::string_view text, MenuBar* parent);
         ~MenuButton() override = default;
+
+        void mouse_down(MouseEvent) noexcept override;
     };
 }

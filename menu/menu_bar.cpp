@@ -31,11 +31,14 @@ namespace Witcher {
     void MenuBar::user_event(UserEvent event) noexcept {
         switch (event.id()) {
             case UserEvent::MouseMove:
-                if (auto data = event.data(); !data.empty()) {
-                    auto&& [x, y] = std::get<std::pair<f32, f32>>(data[0]);
-                    box::println("MenuBar::user_event: MouseMove {}, {}", x, y);
-                    break;
-                }
+                // if (active_menu_button_) {
+                    if (auto const& data = event.data(); !data.empty()) {
+                        if (auto const pair = std::get<std::pair<f32, f32>>(data[0]); frame().contains_point(pair)) {
+                            refocus(pair);
+                        }
+                    }
+                // }
+                break;;
             default: {}
         }
     }
@@ -100,7 +103,7 @@ namespace Witcher {
     }
 
     void MenuBar::mouse_down(MouseEvent event) noexcept {
-
+        box::println("MenuBar::mouse_down");
     }
 
     void MenuBar::mouse_up(MouseEvent event) noexcept {}
@@ -118,5 +121,40 @@ namespace Witcher {
         //     child->draw();
         // }
     };
+
+    /****************************************************************
+    *                                                               *
+    *                       P R I V A T E                           *
+    *                                                               *
+    ****************************************************************/
+
+    void MenuBar::set_active_menu_button(MenuButton* button) noexcept {
+        set_focus(ON);
+        active_menu_button_ = button;
+    }
+
+    void MenuBar::refocus(std::pair<f32, f32> pos) noexcept {
+        auto&& [x, y] = pos;
+
+        // When we have an active button...
+        if (active_menu_button_) {
+            // ... and when this particular button contains coordinates, we do nothing
+            if (active_menu_button_->contains_point(x, y))
+                return;
+
+            // otherwise it ceases to be an active button.
+            active_menu_button_->mouse_down({});
+            active_menu_button_ = nullptr;
+        }
+        // Otherwise, the active button will be the button containing these coordinates
+        for (auto const& button : buttons_) {
+            if (button->contains_point(x, y)) {
+                button->mouse_down({});
+                active_menu_button_ = button;
+                return;
+            }
+        }
+    }
+
 
 }

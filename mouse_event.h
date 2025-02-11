@@ -17,9 +17,10 @@ namespace Witcher {
     };
 
     class MouseEvent {
-        SDL_MouseButtonEvent event_;
-        MouseButton button_;
+        SDL_MouseButtonEvent event_{};
+        MouseButton button_{};
     public:
+        MouseEvent() = default;
         explicit MouseEvent(SDL_MouseButtonEvent const& event) : event_(event) {
             if (event_.button == SDL_BUTTON_LEFT)
                 button_ = MouseButton::Left;
