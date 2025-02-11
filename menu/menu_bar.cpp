@@ -17,7 +17,7 @@ namespace Witcher {
     MenuBar::MenuBar(Widget *parent) : Widget(ObjectType::MenuBar, parent) {
         set_parent(parent);
         set_visible(true);
-        set_visible_frame(false);
+        set_visible_frame(YES);
         set_resizeable(true);
         EventController::self().append(this, UserEvent::MouseMove);
         EventController::self().print_content();
@@ -28,16 +28,18 @@ namespace Witcher {
         EventController::self().print_content();
     }
 
-    void MenuBar::user_event(UserEvent event) noexcept {
+    void MenuBar::user_event(UserEvent const event) noexcept {
         switch (event.id()) {
             case UserEvent::MouseMove:
-                // if (active_menu_button_) {
+                if (active_frame_) {
                     if (auto const& data = event.data(); !data.empty()) {
-                        if (auto const pair = std::get<std::pair<f32, f32>>(data[0]); frame().contains_point(pair)) {
-                            refocus(pair);
+                        if (auto const point = std::get<std::pair<f32, f32>>(data[0]); active_frame_->contains_point(point)) {
+                            refocus(point);
+                            return;
                         }
                     }
-                // }
+                }
+                deactivate();
                 break;;
             default: {}
         }
@@ -66,6 +68,8 @@ namespace Witcher {
     }
 
     void MenuBar::prepare() noexcept {
+        box::println("MenuBar::prepare IN");
+
         for (auto const& button : buttons_)
             button->prepare();
 
@@ -75,16 +79,23 @@ namespace Witcher {
         frame.size.h = h;
         set_frame(frame);
 
+        // for (auto const& button : buttons_) {
+        //     box::println("{}", button->frame());
+        // }
         update_geometry();
     };
 
     void MenuBar::update_geometry() noexcept {
+        box::println("MenuBar::update_geometry IN");
         auto x = 1;
         for (auto const& button : buttons_) {
             button->move(x, 0);
             x += button->size_min().w;
-            x += 0;
+            x += 3;
         }
+        // for (auto const& button : buttons_) {
+        //     box::println("{}", button->frame());
+        // }
     };
 
     Size MenuBar::size_max() const noexcept {
@@ -112,14 +123,20 @@ namespace Witcher {
 
     void MenuBar::update() noexcept {};
 
+    /****************************************************************
+    *                                                               *
+    *                           d r a w                             *
+    *                                                               *
+    ****************************************************************/
+
     void MenuBar::draw() noexcept {
+        // box::println("MenuBar::draw IN");
         draw::fill_rect(renderer(), frame(), thema::DEFAULT_MENU_BACKGROUND);
 
-        for (auto const& button : buttons_)
+        for (auto const& button : buttons_) {
+            // box::println("{}", button->frame());
             button->draw();
-        // for (auto const& child : children()) {
-        //     child->draw();
-        // }
+        }
     };
 
     /****************************************************************
@@ -129,12 +146,41 @@ namespace Witcher {
     ****************************************************************/
 
     void MenuBar::set_active_menu_button(MenuButton* button) noexcept {
-        set_focus(ON);
+        auto const y = buttons_.front()->frame().pos.y;
+        auto const h = buttons_.front()->frame().size.h;
+        auto const xl = buttons_.front()->frame().pos.x;
+        auto const xr = buttons_.back()->frame().pos.x + buttons_.back()->frame().size.w - 1;
+        active_frame_ = Rect{
+            .pos = {xl, y},
+            .size = {xr - xl, h} };
+
         active_menu_button_ = button;
     }
 
+    /****************************************************************
+    *                                                               *
+    *                     d e a c t i v a t e                       *
+    *                                                               *
+    ****************************************************************/
+
+    void MenuBar::deactivate() noexcept {
+        active_frame_ = {};
+        if (active_menu_button_) {
+            active_menu_button_->mouse_down({});
+            active_menu_button_ = nullptr;
+        }
+    }
+
+
+    /****************************************************************
+    *                                                               *
+    *                       r e f o c u s                           *
+    *                                                               *
+    ****************************************************************/
+
     void MenuBar::refocus(std::pair<f32, f32> pos) noexcept {
         auto&& [x, y] = pos;
+        // box::println("MenuBar::refocus IN ({})", pos);
 
         // When we have an active button...
         if (active_menu_button_) {
@@ -146,6 +192,7 @@ namespace Witcher {
             active_menu_button_->mouse_down({});
             active_menu_button_ = nullptr;
         }
+
         // Otherwise, the active button will be the button containing these coordinates
         for (auto const& button : buttons_) {
             if (button->contains_point(x, y)) {

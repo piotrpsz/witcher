@@ -38,8 +38,6 @@ namespace Witcher {
 
         // SETTERS
         void set_parent(Object* const parent) noexcept {
-            // if (type_ == ObjectType::Button)
-            //     bee::box::println("Object::set_parent ({}): {} => {}", static_cast<void *>(this), static_cast<void*>(parent_), static_cast<void*>(parent));
             parent_ = parent;
             renderer_ = parent_ ? parent_->renderer_ : nullptr;
             for (const auto child : children_) {
@@ -77,21 +75,28 @@ namespace Witcher {
         // Flags
         [[nodiscard]] bool visible() const noexcept { return flags_.test(VISIBLE_BIT); }
         void set_visible(bool const value) noexcept {flags_.set(VISIBLE_BIT, value); }
+
         [[nodiscard]] bool visible_frame() const noexcept { return flags_.test(VISIBLE_FRAME_BIT); }
         void set_visible_frame(bool const value) noexcept { flags_.set(VISIBLE_FRAME_BIT, value); }
+
         [[nodiscard]] bool enabled() const noexcept { return flags_.test(ENABLED_BIT); }
         void set_enabled(bool const value) noexcept { flags_.set(ENABLED_BIT, value); }
+
         [[nodiscard]] bool focusable() const noexcept { return flags_.test(FOCUSABLE_BIT); }
         void set_focusable(bool const value) noexcept { flags_.set(FOCUSABLE_BIT, value); }
+
         [[nodiscard]] bool has_focus() const noexcept { return flags_.test(FOCUS_BIT); }
         void set_focus(bool const value) noexcept {
             if (focusable())
                 flags_.set(FOCUS_BIT, value);
         }
+
         [[nodiscard]] bool resizable() const noexcept { return flags_.test(RESIZEABLE_BIT); }
         void set_resizeable(bool const value) noexcept { flags_.set(RESIZEABLE_BIT, value); }
+
         [[nodiscard]] bool displayable() const noexcept { return flags_.test(DISPLAYABLE_BIT); }
         void set_displayable(bool const value) noexcept { flags_.set(DISPLAYABLE_BIT, value); }
+
         [[nodiscard]] bool fix_position() const noexcept { return flags_.test(FIXED_POSITION_BIT); }
         void set_fix_position(bool const value) noexcept { flags_.set(FIXED_POSITION_BIT, value); }
 

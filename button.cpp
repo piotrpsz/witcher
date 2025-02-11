@@ -25,9 +25,9 @@ namespace Witcher {
         set_parent(parent);
         add_child(text_);
         add_child(text_selected_);
-        set_visible(true);
-        set_visible_frame(true);
-        set_resizeable(true);
+        set_visible(YES);
+        set_visible_frame(YES);
+        set_resizeable(YES);
     }
 
     /****************************************************************
@@ -148,19 +148,15 @@ namespace Witcher {
         // Draw frame if needed.
         if (pressed_) {
             draw::fill_rect(renderer(), frame(), *colors.selected_background);
-            if (visible_frame())
-                draw::rect(renderer(), frame(), thema::BLUE_5);
+            if (YES == visible_frame())
+                draw::rect(renderer(), frame(), thema::RED_2);
             text_selected_->draw();
         } else {
             draw::fill_rect(renderer(), frame(), *colors.normal_background);
             if (visible_frame())
-                draw::rect(renderer(), frame(), thema::DEFAULT_FRAME_COLOR);
+                draw::rect(renderer(), frame(), thema::RED_1);
             text_->draw();
         }
-
-        // Draw children.
-        // for (auto const child : children())
-            // text_->draw();
     }
 
     Size Button::size_min() const noexcept {

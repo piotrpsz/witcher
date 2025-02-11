@@ -24,6 +24,8 @@ namespace Witcher {
 
     constexpr bool ON = true;
     constexpr bool OFF = false;
+    constexpr bool YES = true;
+    constexpr bool NO = false;
 
     enum class ObjectType {
         None = 0,
