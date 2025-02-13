@@ -10,3 +10,5 @@
 #include "text.h"
 #include "window.h"
 #include "application.h"
+#include "menu/menu_bar.h"
+#include "menu/menu.h"

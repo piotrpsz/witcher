@@ -64,6 +64,7 @@ namespace Witcher {
     void Application::run() noexcept {
         window_->prepare();
         window_->show();
+        // window_->update_geometry();
         main_loop();
     }
 

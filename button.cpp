@@ -58,7 +58,10 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::update_geometry() noexcept {
+        frame().size.w = size_max().w;
+
         // TODO: jeśli rozmiar przycisku większa od size_min() to trzeba wypośrodkować tekst
+
     }
 
     /****************************************************************

@@ -8,6 +8,7 @@
 #include "mouse_event.h"
 #include <string_view>
 #include <optional>
+#include <functional>
 
 namespace Witcher {
     class Text;
@@ -18,9 +19,13 @@ namespace Witcher {
         bool pressed_ = false;
         bool three_state_ = false;
         std::optional<u64> tickcounter_{};
+        std::function<void()> action_{};
     public:
         explicit Button(std::string_view text, Widget* parent = nullptr);
         ~Button() override = default;
+
+        void set_action(std::function<void()> const& action ) noexcept { action_ = action; }
+        void action() const noexcept { if (action_) action_(); }
 
         void set_three_state(bool const state) noexcept { three_state_ = state; }
         [[nodiscard]] bool is_three_state() const noexcept { return three_state_; }

@@ -10,6 +10,7 @@
 #include "../helpers/draw.h"
 #include "../thema.h"
 #include <numeric>
+#include <algorithm>
 
 namespace Witcher {
     using namespace bee;
@@ -17,7 +18,7 @@ namespace Witcher {
     MenuBar::MenuBar(Widget *parent) : Widget(ObjectType::MenuBar, parent) {
         set_parent(parent);
         set_visible(true);
-        set_visible_frame(YES);
+        // set_visible_frame(YES);
         set_resizeable(true);
         EventController::self().append(this, UserEvent::MouseMove);
         EventController::self().print_content();
@@ -45,11 +46,12 @@ namespace Witcher {
         }
     }
 
-    void MenuBar::add(std::string const& label) noexcept {
-        const auto button = new MenuButton(label, this);
+    MenuButton* MenuBar::add(std::string const& label) noexcept {
+        auto const button = new MenuButton(label, this);
         button->set_visible_frame(false);
         button->padding() = {.left = 0, .top = 3, .right = 0, .bottom = 3};
         buttons_.push_back(button);
+        return button;
     }
 
     Size MenuBar::size_min() const noexcept {
@@ -68,7 +70,7 @@ namespace Witcher {
     }
 
     void MenuBar::prepare() noexcept {
-        box::println("MenuBar::prepare IN");
+        // box::println("MenuBar::prepare IN");
 
         for (auto const& button : buttons_)
             button->prepare();
@@ -78,21 +80,19 @@ namespace Witcher {
         frame.pos = {};
         frame.size.h = h;
         set_frame(frame);
-
-        // for (auto const& button : buttons_) {
-        //     box::println("{}", button->frame());
-        // }
         update_geometry();
     };
 
     void MenuBar::update_geometry() noexcept {
-        box::println("MenuBar::update_geometry IN");
+        // box::println("MenuBar::update_geometry IN");
+
         auto x = 1;
         for (auto const& button : buttons_) {
             button->move(x, 0);
             x += button->size_min().w;
-            x += 3;
+            x += 2;
         }
+
         // for (auto const& button : buttons_) {
         //     box::println("{}", button->frame());
         // }
@@ -114,7 +114,7 @@ namespace Witcher {
     }
 
     void MenuBar::mouse_down(MouseEvent event) noexcept {
-        box::println("MenuBar::mouse_down");
+
     }
 
     void MenuBar::mouse_up(MouseEvent event) noexcept {}
@@ -130,13 +130,14 @@ namespace Witcher {
     ****************************************************************/
 
     void MenuBar::draw() noexcept {
-        // box::println("MenuBar::draw IN");
+        // Fill background
         draw::fill_rect(renderer(), frame(), thema::DEFAULT_MENU_BACKGROUND);
-
-        for (auto const& button : buttons_) {
-            // box::println("{}", button->frame());
+        // Draw frame if needed
+        if (visible_frame())
+            draw::rect(renderer(), frame(), thema::RED_5);
+        // Draw buttons
+        for (auto const& button : buttons_)
             button->draw();
-        }
     };
 
     /****************************************************************
@@ -202,6 +203,5 @@ namespace Witcher {
             }
         }
     }
-
 
 }

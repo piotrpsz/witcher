@@ -20,7 +20,7 @@ namespace Witcher {
         explicit MenuBar(Widget* parent);
         ~MenuBar() override;
 
-        void add(std::string const& label) noexcept;
+        MenuButton* add(std::string const& label) noexcept;
 
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;
