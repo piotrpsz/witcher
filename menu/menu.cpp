@@ -24,6 +24,26 @@ namespace Witcher {
         buttons_.push_back(button);
     }
 
+    void Menu::refocus(std::pair<f32, f32> const& point) noexcept {
+        MenuButton* new_active_button = nullptr;
+
+        for (auto const button : buttons_) {
+            if (button->contains_point(point)) {
+                new_active_button = button;
+                break;
+            }
+        }
+
+        if (new_active_button) {
+            if (active_menu_button_)
+                active_menu_button_->set_pressed(false);
+            active_menu_button_ = new_active_button;
+            active_menu_button_->set_pressed();
+        }
+
+    }
+
+
     /****************************************************************
     *                                                               *
     *       p u r e l y   v i r t u a l   f r o m   o b j e c t     *

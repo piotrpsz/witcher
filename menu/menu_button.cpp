@@ -26,14 +26,17 @@ namespace Witcher {
             menu_.value()->add(label, action);
     }
 
+    bool MenuButton::has_submenu() const noexcept {
+        return menu_.has_value() && menu_.value()->visible();
+    }
+
     void MenuButton::mouse_down(MouseEvent const event) noexcept {
         Button::mouse_down(event);
         auto const bar = dynamic_cast<MenuBar*>(parent());
         bar->set_active_menu_button(has_focus() ? this : nullptr);
 
         if (menu_)
-            // if (!menu_.value()->visible())
-                menu_.value()->set_visible(!menu_.value()->visible());
+            menu_.value()->set_visible(!menu_.value()->visible());
     }
 
     void MenuButton::prepare() noexcept {

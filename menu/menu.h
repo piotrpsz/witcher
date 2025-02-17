@@ -18,6 +18,7 @@ namespace Witcher {
         ~Menu() override = default;
 
         void add(std::string_view name, std::function<void()> const& action);
+        void refocus(std::pair<f32, f32> const& point) noexcept;
 
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;

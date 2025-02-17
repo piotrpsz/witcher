@@ -58,6 +58,9 @@ namespace Witcher {
         [[nodiscard]] ObjectType type() const noexcept { return type_; }
         [[nodiscard]] SDL_Renderer* renderer() const noexcept { return renderer_; }
         [[nodiscard]] virtual Object* contains_point(f32 x, f32 y) noexcept;
+        virtual Object* contains_point(std::pair<f32, f32> point) noexcept {
+            return contains_point(point.first, point.second);
+        }
         [[nodiscard]] std::vector<Object*> const& children() const noexcept { return children_; }
         [[nodiscard]] Padding const& padding() const noexcept { return padding_; }
         [[nodiscard]] Padding& padding() noexcept { return padding_; }

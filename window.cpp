@@ -62,8 +62,10 @@ namespace Witcher {
 
     void Window::prepare() noexcept {
         update_frame();
-        update_geometry();
-        if (menu_bar_) menu_bar_->prepare();
+
+        if (menu_bar_)
+            menu_bar_->prepare();
+
         for (const auto it : children()) {
             it->set_parent(this);
             it->prepare();
@@ -75,6 +77,7 @@ namespace Witcher {
         SDL_ShowWindow(window_);
         set_visible(true);
         move(frame().pos.x, frame().pos.y);
+        update_geometry();
     }
 
     void Window::move(int const x, int const y) noexcept {
@@ -87,11 +90,11 @@ namespace Witcher {
     }
 
     void Window::update_geometry() noexcept {
-        if (menu_bar_) menu_bar_->update_geometry();
+        if (menu_bar_)
+            menu_bar_->update_geometry();
 
-        for (auto const child : children()) {
+        for (auto const child : children())
             child->update_geometry();
-        }
     }
 
     void Window::move_center(int display) noexcept {

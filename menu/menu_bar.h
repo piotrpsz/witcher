@@ -15,7 +15,8 @@ namespace Witcher {
     class MenuBar final : public Widget {
         std::vector<MenuButton*> buttons_;
         MenuButton* active_menu_button_{};
-        std::optional<Rect> active_frame_{};
+        std::optional<Rect> active_buttons_area_{};
+
     public:
         explicit MenuBar(Widget* parent);
         ~MenuBar() override;

@@ -13,6 +13,10 @@ namespace Witcher {
         }
     }
 
+    /// Checks whether the specified point is within the frame of an object and/or its children.
+    /// \param x X coordinate of point
+    /// \param y Y coordinate of point.
+    /// \return A pointer to the object that contains the given point (or NULL).
     Object* Object::contains_point(f32 const x, f32 const y) noexcept {
         if (focusable() && frame_.contains_point(x, y)) {
             for (auto const& child : children_) {
