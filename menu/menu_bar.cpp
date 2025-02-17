@@ -89,13 +89,10 @@ namespace Witcher {
         auto x = 1;
         for (auto const& button : buttons_) {
             button->move(x, 0);
+            button->update_geometry();
             x += button->size_min().w;
             x += 2;
         }
-
-        // for (auto const& button : buttons_) {
-        //     box::println("{}", button->frame());
-        // }
     };
 
     Size MenuBar::size_max() const noexcept {

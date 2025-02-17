@@ -38,10 +38,13 @@ namespace Witcher {
 
     void MenuButton::prepare() noexcept {
         Button::prepare();
-        if (menu_) {
+        if (menu_)
             menu_.value()->prepare();
+    }
+
+    void MenuButton::update_geometry() noexcept {
+        if (menu_)
             menu_.value()->update_geometry();
-        }
     }
 
     void MenuButton::draw() noexcept {

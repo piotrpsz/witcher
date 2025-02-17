@@ -56,7 +56,7 @@ namespace Witcher {
 
     void Menu::update_geometry() noexcept {
         auto const x = parent()->frame().pos.x;
-        auto y = parent()->frame().pos.x + parent()->frame().size.h;
+        auto y = parent()->frame().pos.y + parent()->frame().size.h;
         set_pos(x, y);
         for (auto const& button : buttons_) {
             button->set_pos(x, y);

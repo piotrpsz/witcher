@@ -20,6 +20,7 @@ namespace Witcher {
         void prepare() noexcept override;
 
         void mouse_down(MouseEvent) noexcept override;
+        void update_geometry() noexcept override;
         void draw() noexcept override;
     };
 }
