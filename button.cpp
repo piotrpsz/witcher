@@ -17,10 +17,11 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    Button::Button(std::string_view const text, Widget* const parent) :
+    Button::Button(std::string_view const text, std::function<void()> const& action, Widget* const parent) :
         Widget(ObjectType::Button, parent),
         text_{new Text(text, this)},
-        text_selected_(new Text(text, this))
+        text_selected_(new Text(text, this)),
+        action_(action)
     {
         set_parent(parent);
         add_child(text_);
@@ -45,6 +46,11 @@ namespace Witcher {
             child->prepare();
         }
 
+        // frame().resize(size_max());
+        // update_area(frame());
+        // text_->prepare();
+        // text_selected_->prepare();
+
         frame().resize(size_min());
         update_area(frame());
         text_->set_frame(area());
@@ -59,6 +65,8 @@ namespace Witcher {
 
     void Button::update_geometry() noexcept {
         frame().size.w = size_max().w;
+        text_->update_geometry();
+        text_selected_->update_geometry();
 
         // TODO: jeśli rozmiar przycisku większa od size_min() to trzeba wypośrodkować tekst
 
@@ -172,7 +180,9 @@ namespace Witcher {
 
     Size Button::size_max() const noexcept {
         const auto [w, h] = parent()->frame().size;
-        return {.w = w - padding().left - padding().right, .h = h - padding().top - padding().bottom};
+        return {
+            .w = w - padding().left - padding().right,
+            .h = h - padding().top - padding().bottom};
     }
 
 }

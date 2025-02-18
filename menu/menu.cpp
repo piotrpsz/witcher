@@ -17,10 +17,9 @@ namespace Witcher {
     }
 
     void Menu::add(std::string_view const name, std::function<void()> const& action) {
-        auto const button = new MenuButton(name, this);
+        auto const button = new MenuButton(name, action, this);
         button->set_visible_frame(NO);
         button->padding() = {.left = 3, .top = 3, .right = 3, .bottom = 3};
-        button->set_action(action);
         buttons_.push_back(button);
     }
 
@@ -80,11 +79,9 @@ namespace Witcher {
         set_pos(x, y);
         for (auto const& button : buttons_) {
             button->set_pos(x, y);
+            button->frame().size.w = frame().size.w;
             y += button->frame().size.h;
         }
-        for (auto const& button : buttons_)
-            button->update_geometry();
-
     }
 
     void Menu::draw() noexcept {

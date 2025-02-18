@@ -59,7 +59,7 @@ namespace Witcher {
     }
 
     MenuButton* MenuBar::add(std::string const& label) noexcept {
-        auto const button = new MenuButton(label, this);
+        auto const button = new MenuButton(label, []{}, this);
         button->set_visible_frame(false);
         button->padding() = {.left = 0, .top = 3, .right = 0, .bottom = 3};
         buttons_.push_back(button);

@@ -19,14 +19,14 @@ namespace Witcher {
         bool pressed_ = false;
         bool three_state_ = false;
         std::optional<u64> tickcounter_{};
-        std::function<void()> action_{};
+        std::function<void()> const& action_;
     public:
-        explicit Button(std::string_view text, Widget* parent = nullptr);
+        explicit Button(std::string_view text, std::function<void()> const& action, Widget* parent = nullptr);
         ~Button() override = default;
 
         void set_pressed(bool const pressed = true) noexcept { pressed_ = pressed; }
         [[nodiscard]] bool pressed() const noexcept {return pressed_;}
-        void set_action(std::function<void()> const& action ) noexcept { action_ = action; }
+        // void set_action(std::function<void()> const& action ) noexcept { action_ = action; }
         void action() const noexcept { if (action_) action_(); }
 
         void set_three_state(bool const state) noexcept { three_state_ = state; }

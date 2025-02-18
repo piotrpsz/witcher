@@ -10,7 +10,9 @@
 #include "../toolbox/crypto/crypto.h"
 
 namespace Witcher {
-    MenuButton::MenuButton(std::string_view const text, Widget* const parent) : Button(text, parent) {
+    MenuButton::MenuButton(std::string_view const text, std::function<void()> const& action, Widget* const parent)
+        : Button(text, action, parent)
+    {
         colors.normal_background = thema::DEFAULT_MENU_BACKGROUND;
         colors.normal_foreground = thema::LIGHT_3;
         colors.selected_background = thema::LIGHT_5; //DEFAULT_WINDOW_BACKGROUND;
