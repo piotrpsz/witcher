@@ -40,9 +40,35 @@ namespace Witcher {
     }
 
     Window::~Window() {
-        if (menu_bar_) delete menu_bar_;
+        if (menu_bar_)
+            delete menu_bar_;
         SDL_DestroyRenderer(renderer());
         SDL_DestroyWindow(window_);
+    }
+
+    bool Window::user_quit_request() noexcept {
+        if (can_close()) {
+            auto close_window_request = SDL_Event{.type = SDL_EVENT_WINDOW_CLOSE_REQUESTED};
+            SDL_PushEvent(&close_window_request);
+            auto quit_request = SDL_Event{.type = SDL_EVENT_QUIT};
+            SDL_PushEvent(&quit_request);
+            return true;
+        }
+        return false;
+        /*
+        SDL_Event event;
+        SDL_zero(event);
+        event.type = SDL_EVENT_QUIT;
+        // event.user.code = UserEvent::QuitRequest;
+        // event.user.data1 = nullptr;
+        // event.user.data2 = nullptr;
+
+        // event.type = SDL_EVENT_USER;
+        // event.user.code = UserEvent::QuitRequest;
+        // event.user.data1 = nullptr;
+        // event.user.data2 = nullptr;
+        SDL_PushEvent(&event);
+        */
     }
 
     bool Window::set_content(Object* const content) noexcept {

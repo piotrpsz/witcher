@@ -3,11 +3,11 @@
 //
 
 
-#include "event.h"
+#include "sdl_event.h"
 #include <SDL3/SDL.h>
 
 namespace Witcher {
-        std::unordered_map<uint, char const* const> event::data_ {
+        std::unordered_map<uint, char const* const> sdl_event::data_ {
         {SDL_EVENT_FIRST, "SDL_EVENT_FIRST"},
         /* Application events */
         {SDL_EVENT_QUIT, "SDL_EVENT_QUIT"},
@@ -140,7 +140,7 @@ namespace Witcher {
         {SDL_EVENT_ENUM_PADDING, "SDL_EVENT_ENUM_PADDING"}
     };
 
-    std::string event::to_string(uint const id) {
+    std::string sdl_event::to_string(uint const id) {
         if (data_.contains(id))
             return data_[id];
         return "Unknown error";

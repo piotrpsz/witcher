@@ -48,6 +48,9 @@ namespace Witcher {
             MouseMove = 1,
             MouseDown = 2,
             MouseUp = 3,
+
+
+            QuitRequest = 1000,
         };
     };
 }

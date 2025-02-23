@@ -35,8 +35,8 @@ add_library(witcher
         window.h
         application.cpp
         application.h
-        event.h
-        event.cpp
+        sdl_event.h
+        sdl_event.cpp
         layout.cpp
         menu/menu_bar.cpp
         menu/menu_bar.h

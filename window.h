@@ -30,6 +30,7 @@ namespace Witcher {
         }
 
         bool set_content(Object* content) noexcept;
+        bool user_quit_request() noexcept;
         void show() noexcept;
 
         [[nodiscard]] std::optional<Size> window_size() const noexcept;

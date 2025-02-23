@@ -6,7 +6,7 @@
 -------------------------------------------------------------------*/
 #include "application.h"
 #include "window.h"
-#include "types.h"
+#include "sdl_event.h"
 #include "toolbox/all.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -83,10 +83,10 @@ namespace Witcher {
                 switch (event.type) {
                     // Window Events --------------------------------
                     case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
-                        // box::print("{}\n", event::to_string(event.type));
+                        box::print("{}\n", sdl_event::to_string(event.type));
                         break;
                     case SDL_EVENT_QUIT:
-                        // box::print("{}\n", event::to_string(event.type));
+                        box::print("{}\n", sdl_event::to_string(event.type));
                         if (!can_exit())
                             continue;
                         quit = true;
@@ -135,6 +135,7 @@ namespace Witcher {
                         EventController::self().send(UserEvent::MouseMove, std::pair{e.x, e.y});
                         break;
                     }
+
 
                     default: {}
                 }
