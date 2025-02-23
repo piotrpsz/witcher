@@ -116,6 +116,9 @@ namespace Witcher {
     }
 
     void Window::update_geometry() noexcept {
+        update_frame();
+        // box::println("Window::update_geometry {}", frame().size);
+
         if (menu_bar_)
             menu_bar_->update_geometry();
 
@@ -146,7 +149,8 @@ namespace Witcher {
 
     void Window::resize(int const width, int const height) noexcept {
         if (SDL_SetWindowSize(window_, width, height)) {
-            update_frame();
+            // update_frame();
+            update_geometry();
             return;
         }
         box::print_error("Failed to resize window: {}\n", SDL_GetError());

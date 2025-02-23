@@ -189,10 +189,11 @@ namespace Witcher {
     }
 
     Size Button::size_max() const noexcept {
-        const auto [w, h] = parent()->frame().size;
-        return {
-            .w = w - padding().left - padding().right,
-            .h = h - padding().top - padding().bottom};
+        return size_min();
+        // const auto [w, h] = parent()->frame().size;
+        // return {
+        //     .w = w - padding().left - padding().right,
+        //     .h = h - padding().top - padding().bottom};
     }
 
 }

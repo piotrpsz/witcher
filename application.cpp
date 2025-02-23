@@ -106,6 +106,14 @@ namespace Witcher {
                         // box::println("{}, {}", x, y);
                         break;
                     }
+                    case SDL_EVENT_WINDOW_RESIZED: {
+                        auto const win_event = event.window;
+                        auto const width = win_event.data1;
+                        auto const height = win_event.data2;
+                        box::println("{}, {}", width, height);
+                        window_->update_geometry();
+                        break;
+                    }
 
 
                     // Mouse Events ---------------------------------

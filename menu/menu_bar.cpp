@@ -94,12 +94,15 @@ namespace Witcher {
 
 
     void MenuBar::update_geometry() noexcept {
+        auto [pos, size] = parent()->frame();
+        frame().size.w = size.w;
+        box::println("MenuBar::update_geometry {}", frame().size);
+
         auto x = 1;
         for (auto const& button : buttons_) {
-            button->move(x, 0);
+            button->set_pos(x, 0);
             button->update_geometry();
-            x += button->size_min().w;
-            x += 2;
+            x += (button->size_min().w + 2);
         }
     }
 
