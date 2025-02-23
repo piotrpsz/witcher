@@ -49,7 +49,7 @@ namespace Witcher {
             box::println_error("Failed to initialize TTF - {}\n", SDL_GetError());
             exit(2);
         }
-        displays();
+        // displays();
     }
 
 
@@ -75,6 +75,7 @@ namespace Witcher {
     ****************************************************************/
 
     void Application::main_loop() noexcept {
+        int n = 0;
         bool quit{};
         while (!quit) {
             SDL_Event event;
@@ -113,10 +114,11 @@ namespace Witcher {
                         // box::println("Mouse button down: {}", mouse_event);
                         auto const [x,y] = mouse_event.pos();
                         if (auto const widget = window_->contains_point(x, y)) {
+                            box::println_ptr(widget, "Application::Button down event");
                             if (mouse_event.clicks() == 1) widget->mouse_down(mouse_event);
                             else if (mouse_event.clicks() == 2) widget->mouse_double_down(mouse_event);
                         }
-
+                        ++n;
                         break;
                     }
                     case SDL_EVENT_MOUSE_BUTTON_UP: {

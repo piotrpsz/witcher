@@ -10,6 +10,8 @@
 #include <optional>
 #include <functional>
 
+#include "text.h"
+
 namespace Witcher {
     class Text;
 
@@ -19,11 +21,14 @@ namespace Witcher {
         bool pressed_ = false;
         bool three_state_ = false;
         std::optional<u64> tickcounter_{};
-        std::function<void()> const& action_;
+        std::function<void()> action_;
     public:
-        explicit Button(std::string_view text, std::function<void()> const& action, Widget* parent = nullptr);
+        explicit Button(std::string_view text, std::function<void()>&& action, Widget* parent = nullptr);
         ~Button() override = default;
 
+        std::string_view text() const noexcept {
+            return text_->text();
+        }
         void set_pressed(bool const pressed = true) noexcept { pressed_ = pressed; }
         [[nodiscard]] bool pressed() const noexcept {return pressed_;}
         // void set_action(std::function<void()> const& action ) noexcept { action_ = action; }

@@ -17,9 +17,10 @@ namespace Witcher {
         explicit Menu(Widget* parent);
         ~Menu() override = default;
 
-        void add(std::string_view name, std::function<void()> const& action);
+        void add(std::string_view name, std::function<void()>&& action);
         void refocus(std::pair<f32, f32> const& point) noexcept;
 
+        Object* contains_point(std::pair<f32, f32> point) noexcept override;
         [[nodiscard]] Size size_min() const noexcept override;
         [[nodiscard]] Size size_max() const noexcept override;
         void draw() noexcept override;

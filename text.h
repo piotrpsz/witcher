@@ -21,6 +21,8 @@ namespace Witcher {
     public:
         explicit Text(std::string_view text, Widget* parent = nullptr);
 
+        std::string_view text() const noexcept { return text_; }
+
         void set_color(SDL_Color const color) noexcept {
             colors.normal_foreground = color;
         }

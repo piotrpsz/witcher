@@ -17,11 +17,11 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    Button::Button(std::string_view const text, std::function<void()> const& action, Widget* const parent) :
+    Button::Button(std::string_view const text, std::function<void()>&& action, Widget* const parent) :
         Widget(ObjectType::Button, parent),
         text_{new Text(text, this)},
         text_selected_(new Text(text, this)),
-        action_(action)
+        action_(std::move(action))
     {
         set_parent(parent);
         add_child(text_);
@@ -87,6 +87,8 @@ namespace Witcher {
             }
             set_focus(ON);
             pressed_ = ON;
+
+
         }
     }
 
@@ -97,8 +99,16 @@ namespace Witcher {
     ****************************************************************/
 
     void Button::mouse_up(MouseEvent event) noexcept {
+        box::println("Button::mouse_up IN");
         if (has_focus() && !is_three_state())
             tickcounter_ = SDL_GetTicks();
+
+        auto ptr = action_.target<void()>();
+        std::cout << "Pointer to callable: " << ptr << std::endl;
+        // box::println("Pointer to callable: {}", static_cast<void(*)()>();
+        if (action_) {
+            action_();
+        }
     }
 
     /****************************************************************

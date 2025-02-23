@@ -19,7 +19,6 @@ namespace Witcher {
         constexpr auto flags =
             SDL_WINDOW_RESIZABLE
             | SDL_WINDOW_HIDDEN
-            // | SDL_WINDOW_VULKAN
             | SDL_WINDOW_HIGH_PIXEL_DENSITY
             | SDL_WINDOW_INPUT_FOCUS
             | SDL_WINDOW_MOUSE_FOCUS;
@@ -36,6 +35,8 @@ namespace Witcher {
 
         // Register the window in application.
         app.window_ = this;
+
+        box::println_ptr(this, "Window::Window");
     }
 
     Window::~Window() {
@@ -83,7 +84,6 @@ namespace Witcher {
     void Window::move(int const x, int const y) noexcept {
         if (SDL_SetWindowPosition(window_, x, y)) {
             update_frame();
-            box::println("Window::move, window pos: {}", frame().pos);
             return;
         }
         box::print_error("Failed to move window to position: {}\n", SDL_GetError());
@@ -108,7 +108,7 @@ namespace Witcher {
             if (auto size = window_size()) {
                 auto const [w, h] = size.value();
                 auto const name = std::string(SDL_GetDisplayName(screen[display])).c_str();
-                box::println("Selected display: {}, {}\n", name, display_rect);
+                // box::println("Selected display: {}, {}\n", name, display_rect);
                 auto const x = display_rect.x + (display_rect.w - w) / 2;
                 auto const y = display_rect.y + (display_rect.h - h) / 2;
                 move(x, y);
@@ -138,8 +138,10 @@ namespace Witcher {
     Object* Window::contains_point(f32 const x, f32 const y) noexcept {
         if (focusable()) {
             if (menu_bar_) {
-                if (auto const obj = menu_bar_->contains_point(x, y))
+                if (auto const obj = menu_bar_->contains_point(x, y)) {
+                    box::println_ptr(obj, "Window::contains_point in menu bar");
                     return obj;
+                }
             }
 
             for (auto const child : children())

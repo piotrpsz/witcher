@@ -16,8 +16,8 @@ namespace Witcher {
         set_visible(NO);
     }
 
-    void Menu::add(std::string_view const name, std::function<void()> const& action) {
-        auto const button = new MenuButton(name, action, this);
+    void Menu::add(std::string_view const name, std::function<void()>&& action) {
+        auto const button = new MenuButton(name, std::move(action), this);
         button->set_visible_frame(NO);
         button->padding() = {.left = 3, .top = 3, .right = 3, .bottom = 3};
         buttons_.push_back(button);
@@ -42,6 +42,14 @@ namespace Witcher {
 
     }
 
+
+    Object* Menu::contains_point(std::pair<f32, f32> const point) noexcept {
+        for (auto const button : buttons_) {
+            if (button->contains_point(point))
+                return button;
+        }
+        return nullptr;
+    }
 
     /****************************************************************
     *                                                               *

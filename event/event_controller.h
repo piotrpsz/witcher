@@ -72,9 +72,7 @@ namespace Witcher {
         }
 
         void print_content() const noexcept {
-            bee::box::println("EventController content:");
             if (store_.empty()) {
-                bee::box::println("\t empty");
                 return;
             }
             for (auto const& [k, v] : store_) {

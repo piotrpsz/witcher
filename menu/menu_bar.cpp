@@ -23,7 +23,7 @@ namespace Witcher {
         // set_visible_frame(YES);
         set_resizeable(true);
         EventController::self().append(this, UserEvent::MouseMove);
-        EventController::self().print_content();
+        // EventController::self().print_content();
     }
 
     MenuBar::~MenuBar() {
@@ -109,12 +109,27 @@ namespace Witcher {
 
 
     Object *MenuBar::contains_point(f32 const x, f32 const y) noexcept {
+        box::println("MenuBar::contains_point IN ****************************");
+        // This check only applies to buttons located in the menu bar line.
         if (frame().contains_point(x, y)) {
-            for (auto const& button : buttons_)
-                if (button->contains_point(x, y))
+            for (const auto button : buttons_) {
+                if (button->contains_point({x, y})) {
+                    box::println_ptr(button, "MenuBar::contains_point, button");
                     return button;
+                }
+            }
+            box::println_ptr(this, "MenuBar::contains_point, hmmmm!!!!");
             return this;
         }
+        // Now we need to check if the point is not included in the expanded submenu.
+        if (active_menu_button_ && active_menu_button_->has_submenu()) {
+            auto const menu = active_menu_button_->get_submenu();
+            if (auto const obj = menu->contains_point({x, y}))
+                return obj;
+                // box::println("MenuBar::contains_point, active button [{}]", (void*)active_menu_button_);
+        }
+
+        box::println("MenuBar::contains_point, NO");
         return nullptr;
     }
 
@@ -122,7 +137,10 @@ namespace Witcher {
 
     }
 
-    void MenuBar::mouse_up(MouseEvent event) noexcept {}
+    void MenuBar::mouse_up(MouseEvent event) noexcept {
+
+    }
+
     void MenuBar::mouse_double_down(MouseEvent event) noexcept {}
     void MenuBar::mouse_double_up(MouseEvent event) noexcept {}
 
@@ -194,7 +212,7 @@ namespace Witcher {
         // When we have an active button...
         if (active_menu_button_) {
             // ... and when this particular button contains coordinates, we do nothing
-            if (active_menu_button_->contains_point(x, y))
+            if (active_menu_button_->contains_point({x, y}))
                 return;
 
             // otherwise it ceases to be an active button.
@@ -204,7 +222,7 @@ namespace Witcher {
 
         // Otherwise, the active button will be the button containing these coordinates
         for (auto const& button : buttons_) {
-            if (button->contains_point(x, y)) {
+            if (button->contains_point({x, y})) {
                 button->mouse_down({});
                 active_menu_button_ = button;
                 return;

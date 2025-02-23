@@ -13,17 +13,19 @@ namespace Witcher {
     class MenuButton final : public Button {
         std::optional<Menu*> menu_{};
     public:
-        explicit MenuButton(std::string_view text, std::function<void()> const& action, Widget* parent);
+        explicit MenuButton(std::string_view text, std::function<void()>&& action, Widget* parent);
         ~MenuButton() override = default;
 
-        void add_items(std::string_view label, std::function<void()> const& action) noexcept;
+        void add_items(std::string_view label, std::function<void()>&& action) noexcept;
         void prepare() noexcept override;
         [[nodiscard]] bool has_submenu() const noexcept;
         [[nodiscard]] Menu* get_submenu() const noexcept {
             return menu_.value();
         }
 
+        Object* contains_point(std::pair<f32,f32> point) noexcept override;
         void mouse_down(MouseEvent) noexcept override;
+        void mouse_up(MouseEvent) noexcept override;
         void update_geometry() noexcept override;
         void draw() noexcept override;
 
