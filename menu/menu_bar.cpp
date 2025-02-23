@@ -96,7 +96,7 @@ namespace Witcher {
     void MenuBar::update_geometry() noexcept {
         auto [pos, size] = parent()->frame();
         frame().size.w = size.w;
-        box::println("MenuBar::update_geometry {}", frame().size);
+        // box::println("MenuBar::update_geometry {}", frame().size);
 
         auto x = 1;
         for (auto const& button : buttons_) {
@@ -112,7 +112,7 @@ namespace Witcher {
 
 
     Object *MenuBar::contains_point(f32 const x, f32 const y) noexcept {
-        box::println("MenuBar::contains_point IN ****************************");
+        // box::println("MenuBar::contains_point IN ****************************");
         // This check only applies to buttons located in the menu bar line.
         if (frame().contains_point(x, y)) {
             for (const auto button : buttons_) {

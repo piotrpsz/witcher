@@ -168,10 +168,8 @@ namespace Witcher {
     Object* Window::contains_point(f32 const x, f32 const y) noexcept {
         if (focusable()) {
             if (menu_bar_) {
-                if (auto const obj = menu_bar_->contains_point(x, y)) {
-                    box::println_ptr(obj, "Window::contains_point in menu bar");
+                if (auto const obj = menu_bar_->contains_point(x, y))
                     return obj;
-                }
             }
 
             for (auto const child : children())

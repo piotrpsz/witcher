@@ -49,6 +49,9 @@ namespace Witcher {
         // void mouse_double_down(MouseEvent event) noexcept override;
         // void mouse_double_up(MouseEvent event) noexcept override;
         Object* contains_point(f32 x, f32 y) noexcept override;
+        Object* contains_point(std::pair<f32, f32> point) noexcept override {
+            return contains_point(point.first, point.second);
+        }
         void update_geometry() noexcept override;
         void prepare() noexcept override;
     };

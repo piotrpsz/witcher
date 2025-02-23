@@ -75,7 +75,6 @@ namespace Witcher {
     ****************************************************************/
 
     void Application::main_loop() noexcept {
-        int n = 0;
         bool quit{};
         while (!quit) {
             SDL_Event event;
@@ -83,56 +82,42 @@ namespace Witcher {
                 switch (event.type) {
                     // Window Events --------------------------------
                     case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
-                        box::print("{}\n", sdl_event::to_string(event.type));
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         break;
                     case SDL_EVENT_QUIT:
-                        box::print("{}\n", sdl_event::to_string(event.type));
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         if (!can_exit())
                             continue;
                         quit = true;
                         break;
                     case SDL_EVENT_WINDOW_MINIMIZED:
-                        // box::print("{}\n", event::to_string(event.type));
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         window_->set_visible(false);
                         break;
                     case SDL_EVENT_WINDOW_RESTORED:
-                        // box::print("{}\n", event::to_string(event.type));
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         window_->set_visible(true);
                         break;
-                    case SDL_EVENT_WINDOW_MOVED: {
-                        // auto e = event.window;
-                        // auto x = e.data1;
-                        // auto y = e.data2;
-                        // box::println("{}, {}", x, y);
+                    case SDL_EVENT_WINDOW_MOVED:
                         break;
-                    }
-                    case SDL_EVENT_WINDOW_RESIZED: {
-                        auto const win_event = event.window;
-                        auto const width = win_event.data1;
-                        auto const height = win_event.data2;
-                        box::println("{}, {}", width, height);
+                    case SDL_EVENT_WINDOW_RESIZED:
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         window_->update_geometry();
                         break;
-                    }
-
 
                     // Mouse Events ---------------------------------
                     case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+                        // box::print("{}\n", sdl_event::to_string(event.type));
                         MouseEvent mouse_event{event.button};
-                        // box::println("Mouse button down: {}", mouse_event);
-                        auto const [x,y] = mouse_event.pos();
-                        if (auto const widget = window_->contains_point(x, y)) {
-                            box::println_ptr(widget, "Application::Button down event");
+                        if (auto const widget = window_->contains_point(mouse_event.pos())) {
                             if (mouse_event.clicks() == 1) widget->mouse_down(mouse_event);
                             else if (mouse_event.clicks() == 2) widget->mouse_double_down(mouse_event);
                         }
-                        ++n;
                         break;
                     }
                     case SDL_EVENT_MOUSE_BUTTON_UP: {
                         MouseEvent mouse_event{event.button};
-                        auto const [x,y] = mouse_event.pos();
-                        if (auto const widget = window_->contains_point(x, y)) {
+                        if (auto const widget = window_->contains_point(mouse_event.pos())) {
                             if (mouse_event.clicks() == 1) widget->mouse_up(mouse_event);
                             else if (mouse_event.clicks() == 2) widget->mouse_double_up(mouse_event);
                         }

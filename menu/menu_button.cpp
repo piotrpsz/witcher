@@ -38,15 +38,10 @@ namespace Witcher {
     /// The specificity of this check is that we check not only the button itself,
     /// but also its submenu.
     Object* MenuButton::contains_point(std::pair<f32,f32> const point) noexcept {
-        if (menu_) {
-            // bee::box::println("menu frame: {}, point: {}", menu_.value()->frame(), point);
-
-            if (auto const obj = menu_.value()->contains_point(point)) {
-                // bee::box::println_ptr(obj, "MenuButton::contains_point, found button menu frame: {}, point: {}", menu_.value()->frame(), point);
+        if (menu_)
+            if (auto const obj = menu_.value()->contains_point(point))
                 return obj;
-            }
-        }
-        // bee::box::println_ptr(this, "button {}, frame: {}, point: {} ({})", text(), frame(), point, frame().contains_point(point));
+
         return frame().contains_point(point) ? this : nullptr;
     }
 
@@ -61,8 +56,9 @@ namespace Witcher {
     }
 
     void MenuButton::mouse_up(MouseEvent const event) noexcept {
-        // bee::box::println("MouseButton::mouse_up: IN");
-            action();
+        // if (auto const bar = dynamic_cast<MenuBar*>(parent()))
+        //     bar->deactivate();
+        action();
     }
 
     void MenuButton::prepare() noexcept {
