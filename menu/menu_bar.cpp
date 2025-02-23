@@ -113,12 +113,9 @@ namespace Witcher {
         // This check only applies to buttons located in the menu bar line.
         if (frame().contains_point(x, y)) {
             for (const auto button : buttons_) {
-                if (button->contains_point({x, y})) {
-                    box::println_ptr(button, "MenuBar::contains_point, button");
+                if (button->contains_point({x, y}))
                     return button;
-                }
             }
-            box::println_ptr(this, "MenuBar::contains_point, hmmmm!!!!");
             return this;
         }
         // Now we need to check if the point is not included in the expanded submenu.
@@ -126,7 +123,6 @@ namespace Witcher {
             auto const menu = active_menu_button_->get_submenu();
             if (auto const obj = menu->contains_point({x, y}))
                 return obj;
-                // box::println("MenuBar::contains_point, active button [{}]", (void*)active_menu_button_);
         }
 
         box::println("MenuBar::contains_point, NO");
@@ -179,9 +175,6 @@ namespace Witcher {
             .size = {xr - xl, h} };
 
         active_menu_button_ = button;
-        // if (button->menu_)
-
-
     }
 
     /****************************************************************

@@ -36,7 +36,7 @@ namespace Witcher {
         // Register the window in application.
         app.window_ = this;
 
-        box::println_ptr(this, "Window::Window");
+        box::println("Window::Window");
     }
 
     Window::~Window() {

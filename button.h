@@ -26,7 +26,7 @@ namespace Witcher {
         explicit Button(std::string_view text, std::function<void()>&& action, Widget* parent = nullptr);
         ~Button() override = default;
 
-        std::string_view text() const noexcept {
+        [[nodiscard]] std::string_view text() const noexcept {
             return text_->text();
         }
         void set_pressed(bool const pressed = true) noexcept { pressed_ = pressed; }

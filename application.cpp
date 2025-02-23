@@ -49,7 +49,7 @@ namespace Witcher {
             box::println_error("Failed to initialize TTF - {}\n", SDL_GetError());
             exit(2);
         }
-        // displays();
+        box::println("Application::Application");
     }
 
 
