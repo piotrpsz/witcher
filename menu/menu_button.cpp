@@ -7,6 +7,7 @@
 #include "menu.h"
 #include "../thema.h"
 #include "../event/event_controller.h"
+#include "../widget/dialog/dialog.h"
 
 namespace Witcher {
     MenuButton::MenuButton(std::string text, Action&& action, Widget* const parent)
@@ -53,8 +54,10 @@ namespace Witcher {
     }
 
     void MenuButton::mouse_up(MouseEvent const event) noexcept {
-        if (is_callable())
+        if (is_callable()) {
+            Dialog::show("MenuButton", text(), SDL_GL_GetCurrentWindow());
             deactivate();
+        }
         Button::mouse_up(event);
     }
 

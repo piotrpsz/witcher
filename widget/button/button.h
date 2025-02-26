@@ -31,7 +31,7 @@ namespace Witcher {
 
         ~Button() override = default;
 
-        [[nodiscard]] std::string_view text() const noexcept {
+        [[nodiscard]] std::string text() const noexcept {
             return text_->text();
         }
         void set_pressed(bool const pressed = true) noexcept { pressed_ = pressed; }
