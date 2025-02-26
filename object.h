@@ -130,6 +130,7 @@ namespace Witcher {
         virtual void mouse_double_down(MouseEvent) noexcept {}
         virtual void mouse_double_up(MouseEvent) noexcept {}
         virtual void user_event(UserEvent) noexcept {}
+        virtual void deactivate() noexcept {}
 protected:
         static constexpr int DEFAULT_LEFT_PADDING = 3;
         static constexpr int DEFAULT_RIGHT_PADDING = 3;

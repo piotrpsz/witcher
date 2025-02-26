@@ -40,7 +40,7 @@ namespace Witcher {
         // destructor
         ~UserEvent() = default;
 
-        uint id() const noexcept { return id_; }
+        [[nodiscard]] uint id() const noexcept { return id_; }
         std::vector<Variant> data() && { return std::move(data_); }
         [[nodiscard]] std::vector<Variant> const& data() const& { return std::move(data_); }
     public:
@@ -51,6 +51,7 @@ namespace Witcher {
 
 
             QuitRequest = 1000,
+            MenuActionFire,
         };
     };
 }

@@ -16,8 +16,8 @@ namespace Witcher {
         set_visible(NO);
     }
 
-    void Menu::add(std::string_view const name, std::function<void()>&& action) {
-        auto const button = new MenuButton(name, std::move(action), this);
+    void Menu::add(std::string name, std::function<void()>&& action) {
+        auto const button = new MenuButton(std::move(name), Action(action), this);
         button->set_visible_frame(NO);
         button->padding() = {.left = 3, .top = 3, .right = 3, .bottom = 3};
         buttons_.push_back(button);

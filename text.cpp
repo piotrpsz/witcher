@@ -12,9 +12,9 @@
 
 namespace Witcher {
 
-    Text::Text(std::string_view const text,  Widget* const parent) :
+    Text::Text(std::string text,  Widget* const parent) :
         Widget(ObjectType::Text, parent),
-        text_(text)
+        text_(std::move(text))
     {
         set_parent(parent);
         set_visible(true);

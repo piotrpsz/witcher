@@ -3,10 +3,10 @@
 //
 
 #include "button.h"
-#include "thema.h"
-#include "text.h"
-#include "toolbox/all.h"
-#include "helpers/draw.h"
+#include "../../thema.h"
+#include "../../text.h"
+#include "../../toolbox/all.h"
+#include "../../helpers/draw.h"
 
 namespace Witcher {
     using namespace bee;
@@ -17,10 +17,10 @@ namespace Witcher {
     *                                                               *
     ****************************************************************/
 
-    Button::Button(std::string_view const text, std::function<void()>&& action, Widget* const parent) :
+    Button::Button(std::string text, Action&& action, Widget* const parent) :
         Widget(ObjectType::Button, parent),
         text_{new Text(text, this)},
-        text_selected_(new Text(text, this)),
+        text_selected_(new Text(std::move(text), this)),
         action_(std::move(action))
     {
         set_parent(parent);
@@ -103,11 +103,8 @@ namespace Witcher {
         if (has_focus() && !is_three_state())
             tickcounter_ = SDL_GetTicks();
 
-        auto ptr = action_.target<void()>();
-        std::cout << "Pointer to callable: " << ptr << std::endl;
-        // box::println("Pointer to callable: {}", static_cast<void(*)()>();
-        if (action_) {
-            action_();
+        if (action_.is_callable()) {
+            action_.call();
         }
     }
 

@@ -6,12 +6,11 @@
 #include "menu_bar.h"
 #include "menu.h"
 #include "../thema.h"
-#include "../toolbox/toolbox.h"
-#include "../toolbox/crypto/crypto.h"
+#include "../event/event_controller.h"
 
 namespace Witcher {
-    MenuButton::MenuButton(std::string_view const text, std::function<void()>&& action, Widget* const parent)
-        : Button(text, std::move(action), parent)
+    MenuButton::MenuButton(std::string text, Action&& action, Widget* const parent)
+        : Button(std::move(text), std::move(action), parent)
     {
         colors.normal_background = thema::DEFAULT_MENU_BACKGROUND;
         colors.normal_foreground = thema::LIGHT_3;
@@ -19,15 +18,13 @@ namespace Witcher {
         colors.selected_foreground = thema::DARK_5;
         set_three_state(YES);
         set_visible_frame(YES);
-
-        // bee::box::println_ptr()
     }
 
-    void MenuButton::add_items(std::string_view const label, std::function<void()>&& action) noexcept {
+    void MenuButton::add_items(std::string label, std::function<void()>&& action) noexcept {
         if (!menu_)
             menu_ = new Menu(this);
         if (menu_)
-            menu_.value()->add(label, std::move(action));
+            menu_.value()->add(std::move(label), std::move(action));
     }
 
     bool MenuButton::has_submenu() const noexcept {
@@ -56,9 +53,9 @@ namespace Witcher {
     }
 
     void MenuButton::mouse_up(MouseEvent const event) noexcept {
-        // if (auto const bar = dynamic_cast<MenuBar*>(parent()))
-        //     bar->deactivate();
-        action();
+        if (is_callable())
+            deactivate();
+        Button::mouse_up(event);
     }
 
     void MenuButton::prepare() noexcept {

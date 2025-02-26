@@ -27,8 +27,8 @@ add_library(witcher
         text.cpp
         text.h
         thema.h
-        button.cpp
-        button.h
+        widget/button/button.cpp
+        widget/button/button.h
         helpers/draw.cpp
         helpers/draw.h
         window.cpp
@@ -45,7 +45,8 @@ add_library(witcher
         event/user_event.h
         event/event_controller.h
         menu/menu.cpp
-        menu/menu.h)
+        menu/menu.h
+        widget/button/action.h)
 
 add_subdirectory(toolbox)
 

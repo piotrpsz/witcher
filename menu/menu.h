@@ -17,7 +17,7 @@ namespace Witcher {
         explicit Menu(Widget* parent);
         ~Menu() override = default;
 
-        void add(std::string_view name, std::function<void()>&& action);
+        void add(std::string name, std::function<void()>&& action);
         void refocus(std::pair<f32, f32> const& point) noexcept;
 
         Object* contains_point(std::pair<f32, f32> point) noexcept override;
@@ -27,6 +27,9 @@ namespace Witcher {
         void update() noexcept override;
         void prepare() noexcept override;;
         void update_geometry() noexcept override;
+        void deactivate() noexcept override {
+            parent()->deactivate();
+        }
     };
 
 }

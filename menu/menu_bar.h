@@ -40,7 +40,7 @@ namespace Witcher {
         void prepare() noexcept override;
 
     private:
-        void deactivate() noexcept;
+        void deactivate() noexcept override;
         void set_active_menu_button(MenuButton* button) noexcept;
         void refocus(std::pair<f32,f32> pos) noexcept;
 

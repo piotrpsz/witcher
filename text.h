@@ -19,9 +19,9 @@ namespace Witcher {
         std::shared_ptr<Font> font_;
         SDL_Texture* texture_{};
     public:
-        explicit Text(std::string_view text, Widget* parent = nullptr);
+        explicit Text(std::string text, Widget* parent = nullptr);
 
-        std::string_view text() const noexcept { return text_; }
+        [[nodiscard]] std::string_view text() const noexcept { return text_; }
 
         void set_color(SDL_Color const color) noexcept {
             colors.normal_foreground = color;
