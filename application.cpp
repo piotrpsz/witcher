@@ -12,6 +12,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include "event/event_controller.h"
+#include <unordered_map>
 
 namespace Witcher {
     using namespace bee;
@@ -64,6 +65,7 @@ namespace Witcher {
     void Application::run() noexcept {
         window_->prepare();
         window_->show();
+        displays();
         // window_->update_geometry();
         main_loop();
     }
@@ -148,12 +150,98 @@ namespace Witcher {
         return window_->can_close();
     }
 
+    std::string Application::pixel_format(SDL_PixelFormat const pixfmt) noexcept {
+        static const std::unordered_map<SDL_PixelFormat, char const* const> formats = {
+            { SDL_PIXELFORMAT_INDEX1LSB    , "SDL_PIXELFORMAT_INDEX1LSB"   },
+            { SDL_PIXELFORMAT_INDEX1MSB    , "SDL_PIXELFORMAT_INDEX1MSB"   },
+            { SDL_PIXELFORMAT_INDEX2LSB    , "SDL_PIXELFORMAT_INDEX2LSB"   },
+            { SDL_PIXELFORMAT_INDEX2MSB    , "SDL_PIXELFORMAT_INDEX2MSB"   },
+            { SDL_PIXELFORMAT_INDEX4LSB    , "SDL_PIXELFORMAT_INDEX4LSB"   },
+            { SDL_PIXELFORMAT_INDEX4MSB    , "SDL_PIXELFORMAT_INDEX4MSB"   },
+            { SDL_PIXELFORMAT_INDEX8       , "SDL_PIXELFORMAT_INDEX8"      },
+            { SDL_PIXELFORMAT_RGB332       , "SDL_PIXELFORMAT_RGB332"      },
+            { SDL_PIXELFORMAT_XRGB4444     , "SDL_PIXELFORMAT_XRGB4444"    },
+            { SDL_PIXELFORMAT_XRGB1555     , "SDL_PIXELFORMAT_XRGB1555"    },
+            { SDL_PIXELFORMAT_XBGR1555     , "SDL_PIXELFORMAT_XBGR1555"    },
+            { SDL_PIXELFORMAT_ARGB4444     , "SDL_PIXELFORMAT_ARGB4444"    },
+            { SDL_PIXELFORMAT_RGBA4444     , "SDL_PIXELFORMAT_RGBA4444"    },
+            { SDL_PIXELFORMAT_ABGR4444     , "SDL_PIXELFORMAT_ABGR4444"    },
+            { SDL_PIXELFORMAT_BGRA4444     , "SDL_PIXELFORMAT_BGRA4444"    },
+            { SDL_PIXELFORMAT_ARGB1555     , "SDL_PIXELFORMAT_ARGB1555"    },
+            { SDL_PIXELFORMAT_XBGR4444     , "SDL_PIXELFORMAT_XBGR4444"    },
+            { SDL_PIXELFORMAT_RGBA5551     , "SDL_PIXELFORMAT_RGBA5551"    },
+            { SDL_PIXELFORMAT_ABGR1555     , "SDL_PIXELFORMAT_ABGR1555"    },
+            { SDL_PIXELFORMAT_BGRA5551     , "SDL_PIXELFORMAT_BGRA5551"    },
+            { SDL_PIXELFORMAT_RGB565       , "SDL_PIXELFORMAT_RGB565"      },
+            { SDL_PIXELFORMAT_BGR565       , "SDL_PIXELFORMAT_BGR565"      },
+            { SDL_PIXELFORMAT_RGB24        , "SDL_PIXELFORMAT_RGB24"       },
+            { SDL_PIXELFORMAT_BGR24        , "SDL_PIXELFORMAT_BGR24"       },
+            { SDL_PIXELFORMAT_XRGB8888     , "SDL_PIXELFORMAT_XRGB8888"    },
+            { SDL_PIXELFORMAT_RGBX8888     , "SDL_PIXELFORMAT_RGBX8888"    },
+            { SDL_PIXELFORMAT_XBGR8888     , "SDL_PIXELFORMAT_XBGR8888"    },
+            { SDL_PIXELFORMAT_BGRX8888     , "SDL_PIXELFORMAT_BGRX8888"    },
+            { SDL_PIXELFORMAT_ARGB8888     , "SDL_PIXELFORMAT_ARGB8888"    },
+            { SDL_PIXELFORMAT_RGBA8888     , "SDL_PIXELFORMAT_RGBA8888"    },
+            { SDL_PIXELFORMAT_ABGR8888     , "SDL_PIXELFORMAT_ABGR8888"    },
+            { SDL_PIXELFORMAT_BGRA8888     , "SDL_PIXELFORMAT_BGRA8888"    },
+            { SDL_PIXELFORMAT_XRGB2101010  , "SDL_PIXELFORMAT_XRGB2101010" },
+            { SDL_PIXELFORMAT_XBGR2101010  , "SDL_PIXELFORMAT_XBGR2101010" },
+            { SDL_PIXELFORMAT_ARGB2101010  , "SDL_PIXELFORMAT_ARGB2101010" },
+            { SDL_PIXELFORMAT_ABGR2101010  , "SDL_PIXELFORMAT_ABGR2101010" },
+            { SDL_PIXELFORMAT_RGB48        , "SDL_PIXELFORMAT_RGB48"       },
+            { SDL_PIXELFORMAT_BGR48        , "SDL_PIXELFORMAT_BGR48"       },
+            { SDL_PIXELFORMAT_RGBA64       , "SDL_PIXELFORMAT_RGBA64"      },
+            { SDL_PIXELFORMAT_ARGB64       , "SDL_PIXELFORMAT_ARGB64"      },
+            { SDL_PIXELFORMAT_BGRA64       , "SDL_PIXELFORMAT_BGRA64"      },
+            { SDL_PIXELFORMAT_ABGR64       , "SDL_PIXELFORMAT_ABGR64"      },
+            { SDL_PIXELFORMAT_RGB48_FLOAT  , "SDL_PIXELFORMAT_RGB48_FLOAT" },
+            { SDL_PIXELFORMAT_BGR48_FLOAT  , "SDL_PIXELFORMAT_BGR48_FLOAT" },
+            { SDL_PIXELFORMAT_RGBA64_FLOAT , "SDL_PIXELFORMAT_RGBA64_FLOAT" },
+            { SDL_PIXELFORMAT_ARGB64_FLOAT , "SDL_PIXELFORMAT_ARGB64_FLOAT" },
+            { SDL_PIXELFORMAT_BGRA64_FLOAT , "SDL_PIXELFORMAT_BGRA64_FLOAT" },
+            { SDL_PIXELFORMAT_ABGR64_FLOAT , "SDL_PIXELFORMAT_ABGR64_FLOAT" },
+            { SDL_PIXELFORMAT_RGB96_FLOAT  , "SDL_PIXELFORMAT_RGB96_FLOAT"  },
+            { SDL_PIXELFORMAT_BGR96_FLOAT  , "SDL_PIXELFORMAT_BGR96_FLOAT"  },
+            { SDL_PIXELFORMAT_RGBA128_FLOAT, "SDL_PIXELFORMAT_RGBA128_FLOAT" },
+            { SDL_PIXELFORMAT_ARGB128_FLOAT, "SDL_PIXELFORMAT_ARGB128_FLOAT" },
+            { SDL_PIXELFORMAT_BGRA128_FLOAT, "SDL_PIXELFORMAT_BGRA128_FLOAT" },
+            { SDL_PIXELFORMAT_ABGR128_FLOAT, "SDL_PIXELFORMAT_ABGR128_FLOAT" },
+            { SDL_PIXELFORMAT_YV12         , "SDL_PIXELFORMAT_YV12"          },
+            { SDL_PIXELFORMAT_IYUV         , "SDL_PIXELFORMAT_IYUV"          },
+            { SDL_PIXELFORMAT_YUY2         , "SDL_PIXELFORMAT_YUY2"          },
+            { SDL_PIXELFORMAT_UYVY         , "SDL_PIXELFORMAT_UYVY"          },
+            { SDL_PIXELFORMAT_YVYU         , "SDL_PIXELFORMAT_YVYU"          },
+            { SDL_PIXELFORMAT_NV12         , "SDL_PIXELFORMAT_NV12"          },
+            { SDL_PIXELFORMAT_NV21         , "SDL_PIXELFORMAT_NV21"          },
+            { SDL_PIXELFORMAT_P010         , "SDL_PIXELFORMAT_P010"          },
+            { SDL_PIXELFORMAT_EXTERNAL_OES , "SDL_PIXELFORMAT_EXTERNAL_OES"  },
+            { SDL_PIXELFORMAT_MJPG         , "SDL_PIXELFORMAT_MJPG"          },
+        };
+        static const std::unordered_map<SDL_PixelFormat, char const* const> aliases = {
+            { SDL_PIXELFORMAT_RGBA32       , "SDL_PIXELFORMAT_RGBA32"        },
+            { SDL_PIXELFORMAT_ARGB32       , "SDL_PIXELFORMAT_ARGB32"        },
+            { SDL_PIXELFORMAT_BGRA32       , "SDL_PIXELFORMAT_BGRA32"        },
+            { SDL_PIXELFORMAT_ABGR32       , "SDL_PIXELFORMAT_ABGR32"        },
+            { SDL_PIXELFORMAT_RGBX32       , "SDL_PIXELFORMAT_RGBX32"        },
+            { SDL_PIXELFORMAT_XRGB32       , "SDL_PIXELFORMAT_XRGB32"        },
+            { SDL_PIXELFORMAT_BGRX32       , "SDL_PIXELFORMAT_BGRX32"        },
+            { SDL_PIXELFORMAT_XBGR32       , "SDL_PIXELFORMAT_XBGR32"        },
+        };
+
+        if (auto const it = formats.find(pixfmt); it != formats.end()) {
+            if (auto const ait = aliases.find(pixfmt); ait != aliases.end())
+                return std::format("{} / {}", ait->second, it->second);
+            return it->second;
+        }
+        return "SDL_PIXELFORMAT_UNKNOWN";
+    }
+
     void Application::displays() {
         box::println("Available displays:");
         int count = 0;
         SDL_DisplayID* ptr = SDL_GetDisplays(&count);
         for (int i = 0; i < count; i++) {
-            auto id = ptr[i];
+            auto const id = ptr[i];
             auto const name = std::string(SDL_GetDisplayName(id)).c_str();
             SDL_Rect rect;
             SDL_GetDisplayBounds(id, &rect);
@@ -163,6 +251,10 @@ namespace Witcher {
                 id, name,
                 rect.x, rect.y, rect.w, rect.h,
                 available.x, available.y, available.w, available.h);
+            auto const mode = SDL_GetDesktopDisplayMode(id);
+            if (!mode) continue;
+            box::println("\t\t pixel density: {}, refresh rate: {}, pixel: {}",
+                mode->pixel_density, mode->refresh_rate, pixel_format(mode->format));
         }
 
         SDL_free(ptr);

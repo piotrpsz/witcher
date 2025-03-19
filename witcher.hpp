@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "widget.h"
+#include "widgets/widget/widget.h"
 #include "layout.h"
-#include "widget/button/button.h"
+#include "widgets/button/button.h"
 #include "text.h"
 #include "window.h"
 #include "application.h"

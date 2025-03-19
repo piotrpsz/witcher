@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "widget.h"
+#include "widgets/widget/widget.h"
 #include "thema.h"
 #include "types.h"
 #include <string_view>

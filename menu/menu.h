@@ -4,8 +4,8 @@
 
 #pragma once
 #include <functional>
-
-#include "../widget.h"
+#include "../widgets/button/action.h"
+#include "../widgets/widget/widget.h"
 
 namespace Witcher {
     class MenuButton;
@@ -13,11 +13,19 @@ namespace Witcher {
     class Menu final : public Widget {
         std::vector<MenuButton*> buttons_{};
         MenuButton* active_menu_button_{};
+        bool has_submenu_{};
     public:
         explicit Menu(Widget* parent);
-        ~Menu() override = default;
+        ~Menu() noexcept override;
 
-        void add(std::string name, std::function<void()>&& action);
+        /// Adding a menu button to the menu.
+        /// \param text Text displayed in the button.
+        /// \param action Action performed after pressing the button (if given).
+        /// \return Pointer to the created button
+        MenuButton* add(std::string text, Action action = {});
+
+
+
         void refocus(std::pair<f32, f32> const& point) noexcept;
 
         Object* contains_point(std::pair<f32, f32> point) noexcept override;
@@ -27,9 +35,7 @@ namespace Witcher {
         void update() noexcept override;
         void prepare() noexcept override;;
         void update_geometry() noexcept override;
-        void deactivate() noexcept override {
-            parent()->deactivate();
-        }
+        void deactivate() noexcept override;
     };
 
 }

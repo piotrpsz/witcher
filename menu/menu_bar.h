@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../widget.h"
+#include "../widgets/widget/widget.h"
 #include <vector>
 #include <string>
 #include <optional>

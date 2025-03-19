@@ -19,6 +19,7 @@ namespace Witcher {
         constexpr auto flags =
             SDL_WINDOW_RESIZABLE
             | SDL_WINDOW_HIDDEN
+            // | SDL_WINDOW_VULKAN
             | SDL_WINDOW_HIGH_PIXEL_DENSITY
             | SDL_WINDOW_INPUT_FOCUS
             | SDL_WINDOW_MOUSE_FOCUS;
@@ -40,8 +41,7 @@ namespace Witcher {
     }
 
     Window::~Window() {
-        if (menu_bar_)
-            delete menu_bar_;
+        delete menu_bar_;
         SDL_DestroyRenderer(renderer());
         SDL_DestroyWindow(window_);
     }

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../widget.h"
+#include "../widget/widget.h"
 #include "../../mouse_event.h"
 #include <string_view>
 #include <optional>

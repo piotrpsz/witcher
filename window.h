@@ -6,7 +6,7 @@
 
 /*------- include files:
 -------------------------------------------------------------------*/
-#include "widget.h"
+#include "widgets/widget/widget.h"
 #include <optional>
 
 #include "layout.h"

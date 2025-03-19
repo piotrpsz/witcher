@@ -7,10 +7,10 @@
 #include "menu.h"
 #include "../thema.h"
 #include "../event/event_controller.h"
-#include "../widget/dialog/dialog.h"
+#include "../widgets/dialog/dialog.h"
 
 namespace Witcher {
-    MenuButton::MenuButton(std::string text, Action&& action, Widget* const parent)
+    MenuButton::MenuButton(std::string text, Action action, Widget* const parent)
         : Button(std::move(text), std::move(action), parent)
     {
         colors.normal_background = thema::DEFAULT_MENU_BACKGROUND;
@@ -21,15 +21,21 @@ namespace Witcher {
         set_visible_frame(YES);
     }
 
-    void MenuButton::add_items(std::string label, std::function<void()>&& action) noexcept {
+    /// When we add another menu-button to a menu-button,
+    /// it means adding a submenu with that new menu-button.
+    MenuButton* MenuButton::add(std::string text, Action action) noexcept {
         if (!menu_)
             menu_ = new Menu(this);
+
         if (menu_)
-            menu_.value()->add(std::move(label), std::move(action));
+            if (auto const btn = menu_.value()->add(std::move(text), std::move(action)))
+                return btn;
+
+        return {};
     }
 
     bool MenuButton::has_submenu() const noexcept {
-        return menu_.has_value() && menu_.value()->visible();
+        return menu_.has_value();
     }
 
     /// Checking if a point applies to a button.
@@ -55,7 +61,7 @@ namespace Witcher {
 
     void MenuButton::mouse_up(MouseEvent const event) noexcept {
         if (is_callable()) {
-            Dialog::show("MenuButton", text(), SDL_GL_GetCurrentWindow());
+            // Dialog::show("MenuButton", text(), SDL_GL_GetCurrentWindow());
             deactivate();
         }
         Button::mouse_up(event);

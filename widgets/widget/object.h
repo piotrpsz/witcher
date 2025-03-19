@@ -4,16 +4,16 @@
 
 #pragma once
 
-#include "types.h"
-#include "thema.h"
-#include "mouse_event.h"
+#include "../../types.h"
+#include "../../thema.h"
+#include "../../mouse_event.h"
 #include <vector>
 #include <bitset>
 #include <SDL3/SDL.h>
 
-#include "event/user_event.h"
-#include "toolbox/toolbox.h"
-#include "toolbox/crypto/crypto.h"
+#include "../../event/user_event.h"
+#include "../../toolbox/toolbox.h"
+#include "../../toolbox/crypto/crypto.h"
 
 namespace Witcher {
 

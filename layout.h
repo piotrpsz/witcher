@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "object.h"
+#include "widgets/widget/object.h"
 
 namespace Witcher {
 

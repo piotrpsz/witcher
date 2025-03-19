@@ -8,7 +8,6 @@
 
 namespace Witcher {
 
-
     Menu::Menu(Widget *parent) : Widget(ObjectType::Menu, parent) {
         set_parent(parent);
         set_resizeable(NO);
@@ -16,11 +15,23 @@ namespace Witcher {
         set_visible(NO);
     }
 
-    void Menu::add(std::string name, std::function<void()>&& action) {
-        auto const button = new MenuButton(std::move(name), Action(action), this);
+    Menu::~Menu() noexcept {
+        for (auto const btn : buttons_)
+            delete btn;
+        buttons_.clear();
+    }
+
+    MenuButton* Menu::add(std::string text, Action action) {
+        auto const button = new MenuButton(std::move(text), std::move(action), this);
         button->set_visible_frame(NO);
         button->padding() = {.left = 3, .top = 3, .right = 3, .bottom = 3};
         buttons_.push_back(button);
+        return button;
+    }
+
+    void Menu::deactivate() noexcept {
+        active_menu_button_ = nullptr;
+        parent()->deactivate();
     }
 
     void Menu::refocus(std::pair<f32, f32> const& point) noexcept {
@@ -85,10 +96,16 @@ namespace Witcher {
         auto const x = parent()->frame().pos.x;
         auto y = parent()->frame().pos.y + parent()->frame().size.h;
         set_pos(x, y);
-        for (auto const& button : buttons_) {
-            button->set_pos(x, y);
-            button->frame().size.w = frame().size.w;
-            y += button->frame().size.h;
+
+        auto ext = 0;
+        for (auto const btn : buttons_)
+            if (btn->has_submenu())
+                ext = 50;
+
+        for (auto const btn : buttons_) {
+            btn->set_pos(x, y);
+            btn->frame().size.w = frame().size.w + ext;
+            y += btn->frame().size.h;
         }
     }
 

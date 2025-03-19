@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "../object.h"
+#include "../widgets/widget/object.h"
 #include "../toolbox/all.h"
 #include "event.h"
 #include <unordered_map>

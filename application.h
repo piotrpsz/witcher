@@ -42,6 +42,7 @@ namespace Witcher {
         void update();
         [[nodiscard]] bool can_exit() const noexcept;
         static void displays();
+        static std::string pixel_format(SDL_PixelFormat) noexcept;
 
         friend Window;
     };
